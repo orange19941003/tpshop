@@ -1,0 +1,111 @@
+{include file="common/header" /}
+<style type="text/css">
+    img{
+        width: 100px;
+        height: 100px;
+    }
+</style>
+    <div class="layui-body">
+    <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb"lay-separator=">"><a>商品</a><a href="#">商品管理</a></span>
+            <form class="layui-form" method="get" id="form2" style="margin-top: 20px">
+                <div class="layui-inline">
+                    <label class="layui-form-label">商品编号</label>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="pro_no" placeholder="" autocomplete="off" class="layui-input" value="{$pro_no}">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">名称</label>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="title" placeholder="" autocomplete="off" class="layui-input" value="{$title}">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">所属分类</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                        <select name="cate_id">
+                        <option value=""></option>
+                        {foreach name="cates" item="cate"}
+                        <option value="{$cate.id}" {if condition="$cate_id eq $cate.id"}selected = "selected"{/if}>{$cate.title}</option>
+                        {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <button class="layui-btn" lay-submit lay-filter="formDemo">查找</button>
+            </form>
+            <div style="margin-top: 20px;">
+            <a href="{:url('shop.product/add')}"><button class="layui-btn">增加</button></a>
+            </div>
+        <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>商品名称</th>
+                    <th>商品编号</th>
+                    <th>所属分类</th>
+                    <th>关键词</th>
+                    <th>描述</th>
+                    <th>商品主图</th>
+                    <th>最低价格</th>
+                    <th>成本</th>
+                    <th>点击量</th>
+                    <th>操作</th>
+                </tr> 
+                </thead>
+                <tbody>
+                {foreach name="products" item="vo"}
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.title}</td>
+                    <td>{$vo.pro_no}</td>
+                    <td>{$vo.cate.title}</td>
+                    <td>{$vo.keywords}</td>
+                    <td>{$vo.desc}</td>
+                    <td>
+                        <img src="__IMG__/{$vo.img}">
+                    </td>
+                    <td>{$vo.price}</td>
+                    <td>{$vo.cost}</td>
+                    <td>{$vo.pv}</td>
+                    <td><a href="{:url('shop.product/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$vo.id})" value="删除"></td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        {$products->render()}
+        </div>
+    </div>
+
+{include file="common/footer" /}
+ 
+<script type="text/javascript">
+        function del(id) {
+            layer.confirm('确定要删除吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('shop.product/del')}",
+                    data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('shop.product/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+
+        function select(){ 
+            alert('111');
+            $.ajax({
+                type:"get",
+                url:"{:url('shop.product/lst')}",
+                data: $('#form2').serialize(),
+            });
+        }
+</script>
+

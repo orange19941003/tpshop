@@ -1,0 +1,53 @@
+{include file="common/header" /}
+
+    <div class="layui-body">
+    <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb" lay-separator=">"><a>系统管理</a><a href="{:url('sys.acl/lst')}">权限管理</a></span>
+            <div style="margin-top: 20px">
+            <a href="{:url('sys.acl/add')}"><button class="layui-btn">增加</button></a>
+            </div>
+        <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>权限码</th>
+                    <th>名称</th>
+                    <th>跳转地址</th>
+                    <th>所属模块</th>
+                    <th>操作</th>
+                </tr> 
+                </thead>
+                <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td><a href=""><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del()" value="删除"></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+{include file="common/footer" /}
+ 
+<script type="text/javascript">
+        function del(id) {
+            layer.confirm('确定要删除吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('sys.acl/del')}",
+                    data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('sys.acl/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>
+

@@ -1,0 +1,52 @@
+{include file="common/header" /}
+
+    <div class="layui-body">
+    <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb" lay-separator=">"><a>后台用户</a><a href="{:url('admin/lst')}">后台用户管理</a></span>
+            <div style="margin-top: 20px">
+            <a href="{:url('admin/add')}"><button class="layui-btn">增加</button></a>
+            </div>
+        <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>昵称</th>
+                    <th>操作</th>
+                </tr> 
+                </thead>
+                <tbody>
+                {foreach name="admins" item="admin"}
+                <tr>
+                    <td>{$admin.id}</td>
+                    <td>{$admin.name}</td>
+                    <td><a href="{:url('admin/edit', ['id'=>$admin.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$admin.id})" value="删除"></td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+{include file="common/footer" /}
+ 
+<script type="text/javascript">
+        function del(id) {
+            layer.confirm('确定要删除吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('admin/del')}",
+                    data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('admin/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>
+

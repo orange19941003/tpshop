@@ -1,0 +1,124 @@
+{include file="common/header" /}
+<style type="text/css">
+    img{
+        width: 100px;
+        height: 100px;
+    }
+</style>
+<link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding: 15px;">
+        <span class="layui-breadcrumb" lay-separator=">"><a>商品</a><a href="{:url('shop.product/lst')}">商品管理</a><a href="#">编辑</a></span>
+<form class="layui-form" method="post" id="form1" style="margin-top: 20px">
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-block">
+        <input type="text" name="title" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" value="{$product.title}">
+    </div>
+    </div>
+    <div class="layui-form-item img">
+        <label class="layui-form-label" style="margin-top: 30px">商品主图</label>
+    <div class="layui-input-block">
+        <button type="button" class="layui-btn" id="test1">
+            <i class="layui-icon">&#xe67c;</i>上传商品主图
+        </button>
+        <img src="__IMG__/{$product.img}">
+    </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品编号</label>
+        <div class="layui-input-block">
+        <input type="text" name="pro_no" required lay-verify="required" placeholder="请输入商品编号" autocomplete="off" class="layui-input" value="{$product.pro_no}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">所属分类</label>
+    <div class="layui-input-block">
+        <select name="cate_id" lay-verify="required">
+            <option value=""></option>
+            {foreach name="cates" item="cate"}
+                <option value="{$cate.id}" {if condition="$product.cate_id eq $cate.id"}selected="selected"{/if}>{$cate.title}</option>
+            {/foreach}
+        </select>
+    </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">关键词</label>
+        <div class="layui-input-block">
+        <input type="text" name="keywords" required lay-verify="required" placeholder="请输入关键词" autocomplete="off" class="layui-input" value="{$product.keywords}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">最低价格</label>
+        <div class="layui-input-block">
+        <input type="text" name="price" required lay-verify="required" placeholder="￥" autocomplete="off" class="layui-input" value="{$product.price}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">成本价</label>
+        <div class="layui-input-block">
+        <input type="text" name="cost" required lay-verify="required" placeholder="￥" autocomplete="off" class="layui-input" value="{$product.cost}">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">描述</label>
+    <div class="layui-input-block">
+      <textarea name="desc" placeholder="请输入内容" class="layui-textarea" style="width: 500px">{$product.desc}</textarea>
+    </div>
+    </div>
+    <div class="layui-form-item">
+    <div class="layui-input-block">
+    <input type="hidden" name="id" value="{$product.id}">
+    <input type="hidden" name="img" value="" id="input-img">
+    <input type="button" value="提交" onclick="edit()" class="layui-btn edit">
+    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+    </div>
+</form>
+ 
+    </div>
+</div>
+{include file="common/footer" /}
+
+<script src="__PUBLIC__/layui/layui.js"></script>
+<script>
+layui.use('upload', function(){
+  var upload = layui.upload;
+   
+  //执行实例
+  var uploadInst = upload.render({
+    elem: '#test1' //绑定元素
+    ,url: '{:url('api/upload/index')}' //上传接口
+    ,done: function(res){
+      if (res.code == 1){
+        layer.msg("图片上传成功");
+      }
+        $('#input-img').val(res.url);
+        $("img").attr("src","__IMG__/" + res.url);
+    }
+    ,error: function(){
+       layer.msg('图片上传失败');//请求异常回调
+    }
+  });
+});
+</script>
+<script type="text/javascript">
+    function edit() {
+        layer.confirm('确定要修改吗?', function(index) {
+            $.ajax({
+                type:"post",
+                url:"{:url('shop.product/edit')}",
+                data: $('#form1').serialize(),
+                success:function(res) {
+                    layer.msg(res.msg);
+                    if (res.code == 1) {
+                    setTimeout(function(){
+                        location.href = "{:url('shop.product/lst')}";
+                    },1500)
+                }
+                }
+            });
+        });
+    }
+</script>
