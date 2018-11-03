@@ -8,6 +8,8 @@ use app\admin\model\Admin as adminUser;
 
 class Base extends Controller
 {
+	public $admin_id;
+
 	public function _initialize() 
 	{
 		header("Access-Control-Allow-Origin: *");
@@ -15,6 +17,7 @@ class Base extends Controller
 		if (!$res) {
 			return $this->error('请先登录', 'Login/login');
 		}
+		$this->admin_id = Session::get('admin_id');
 		$adminUser = Session::get('user');
 		$this->assign('adminUser', $adminUser);
 	}

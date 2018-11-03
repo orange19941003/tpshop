@@ -1,0 +1,109 @@
+{include file="common/header" /}
+
+    <div class="layui-body">
+    <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb" lay-separator=">"><a>商品</a><a href="{:url('shop.order/lst')}">订单管理</a></span>
+            <div style="margin-top: 20px">
+                <a href="{:url('shop.order/add')}"><button class="layui-btn">增加</button></a>
+            </div>
+        <table class="layui-table">
+            <colgroup>
+                <col width="50">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+                <col width="100">
+                <col width="200">
+                <col width="100">
+                <col width="200">
+                <col width="100">
+                <col width="200">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>用户昵称</th>
+                <th>商品名称</th>
+                <th>电话号码</th>
+                <th>收货人</th>
+                <th>收货地址</th>
+                <th>是否发货</th>
+                <th>订单创建时间</th>
+                <th>操作人</th>
+                <th>操作</th>
+            </tr> 
+            </thead>
+            <tbody>
+                {foreach name="orders" item="order"}
+                <tr>
+                    <td>{$order.id}</td>
+                    <td>{$order.user_name}</td>
+                    <td>{$order->product($order.pro_id)}</td>
+                    <td>{$order.tel}</td>
+                    <td>{$order.name}</td>
+                    <td>{$order.address}</td>
+                    <td>
+                        {if condition="$order.status eq 0"}
+                        未发货
+                        {else/}
+                        已发货
+                        {/if}
+                    </td>
+                    <td>{$order.time|date="Y-m-d H:i:s",###}</td>
+                    <td>
+                        {if condition="$order.admin_id eq 0"}
+                            无
+                        {else/}
+                        {$order->admin($order.admin_id)}
+                        {/if}
+                    </td>
+                    <td><a href="{:url('shop.order/edit', ['id'=>$order.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$order.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 20px" onclick="fahuo({$order.id})" value="发货"></td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        {$orders->render()}
+        </div>
+    </div>
+
+{include file="common/footer" /}
+ 
+<script type="text/javascript">
+        function del(id) {
+            layer.confirm('确定要删除吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('shop.order/del')}",
+                    data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('shop.order/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+
+        function fahuo(id) {
+            layer.confirm('确定要发货吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('shop.order/fahuo')}",
+                    data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('shop.order/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>
+

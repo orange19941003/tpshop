@@ -31,7 +31,9 @@ class Login extends Controller
 				if ($password != $o_user->password) {
 					return $this->error('密码错误');
 				}
+				$admin_id = $o_user->id;
 				Session::set('user', $name);
+				Session::set('admin_id', $admin_id);
 
 				return $this->success('登录成功', 'Index/Index');
 			}

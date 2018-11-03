@@ -25,7 +25,7 @@ class User extends Base
 			$name = input('name', '');
 			$tel = input('tel', '');
 			$password = input('password', '');
-			
+			$integral = input('integral', '0');
 			if (empty($name)) {
 				return $this->no("用户名不能为空");
 			}
@@ -37,9 +37,16 @@ class User extends Base
 			}
 			$password = md5($password);
 			$user = new appUser;
+			$is_exit_name = $user->where('name', $name)
+				->where('status', '1')
+				->find();
+			if ($is_exit_name) {
+				return $this->no("用户名已存在");
+			}
 			$user->name = $name;
 			$user->password = $password;
 			$user->tel = $tel;
+			$user->integral = $integral;
 			$res = $user->save();
 			if (!$res) {
 				return $this->no("新增失败");
@@ -79,6 +86,7 @@ class User extends Base
 			$name = input('name', '');
 			$tel = input('tel', '');
 			$password = input('password', '');
+			$integral = input('integral', '0');
 			if (empty($name)) {
 				return $this->no("用户名不能为空");
 			}
@@ -102,6 +110,7 @@ class User extends Base
 			if (!empty($password)) {
 				$o_user->password = md5($password);
 			}
+			$o_user->integral = $integral;
 			$o_user->name = $name;
 			$o_user->tel = $tel;
 			$res = $o_user->save();
@@ -120,6 +129,25 @@ class User extends Base
 
 			return $this->fetch('edit');
 		}
+	}
+
+	public function chongzhi()
+	{
+		$id = input('id');
+		$integral = input('integral');
+		$o_user = appUser::where('id', $id)
+			->where('status', '1')
+			->find();
+		if (!$o_user) {
+			return $this->no("对象属性错误");
+		}
+		$o_user->integral += $integral;
+		$res = $o_user->save();
+		if (!$res) {
+			return $this->no("充值失败");
+		} 
+
+		return $this->yes("充值成功");
 	}
 
 }

@@ -18,6 +18,7 @@
                     <th>ID</th>
                     <th>昵称</th>
                     <th>电话号码</th>
+                    <th>积分</th>
                     <th>操作</th>
                 </tr> 
                 </thead>
@@ -27,7 +28,8 @@
                     <td>{$user.id}</td>
                     <td>{$user.name}</td>
                     <td>{$user.tel}</td>
-                    <td><a href="{:url('user/edit', ['id'=>$user.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$user.id})" value="删除"></td>
+                    <td>{$user.integral}</td>
+                    <td><a href="{:url('user/edit', ['id'=>$user.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$user.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 20px" onclick="chongzhi({$user.id})" value="充值积分"></td>
                 </tr>
                 {/foreach}
             </tbody>
@@ -45,6 +47,25 @@
                     type:"get",
                     url:"{:url('user/del')}",
                     data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('user/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+        function chongzhi(id) {
+            var index = layer.prompt({
+                title : '请输入你要充值的积分数'
+            },function(val, index){
+                $.ajax({
+                    type:"get",
+                    url:"{:url('user/chongzhi')}",
+                    data:{id:id,integral:val},
                     success:function(res) {
                         layer.msg(res.msg);
                         if (res.code == 1) {
