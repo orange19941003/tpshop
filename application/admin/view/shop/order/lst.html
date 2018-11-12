@@ -15,10 +15,11 @@
                 <col width="100">
                 <col width="100">
                 <col width="200">
-                <col width="100">
                 <col width="200">
                 <col width="100">
                 <col width="200">
+                <col width="100">
+                <col width="250">
             </colgroup>
             <thead>
             <tr>
@@ -28,6 +29,7 @@
                 <th>电话号码</th>
                 <th>收货人</th>
                 <th>收货地址</th>
+                <th>发货信息</th>
                 <th>是否发货</th>
                 <th>订单创建时间</th>
                 <th>操作人</th>
@@ -44,6 +46,13 @@
                     <td>{$order.name}</td>
                     <td>{$order.address}</td>
                     <td>
+                        {if condition="$order.information eq ''"}
+                        暂无发货信息
+                        {else/}
+                        {$order.information}
+                        {/if}
+                    </td>
+                    <td>
                         {if condition="$order.status eq 0"}
                         未发货
                         {else/}
@@ -58,7 +67,7 @@
                         {$order->admin($order.admin_id)}
                         {/if}
                     </td>
-                    <td><a href="{:url('shop.order/edit', ['id'=>$order.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$order.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 20px" onclick="fahuo({$order.id})" value="发货"></td>
+                    <td><a href="{:url('shop.order/edit', ['id'=>$order.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$order.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 20px" onclick="fahuo({$order.id})" value="{if condition="$order.status eq 0"}发货{else/}修改{/if}"></td>
                 </tr>
                 {/foreach}
             </tbody>
@@ -89,11 +98,33 @@
         }
 
         function fahuo(id) {
-            layer.confirm('确定要发货吗?', function(index) {
+            layer.prompt('确定要发货吗?', function(index) {
                 $.ajax({
                     type:"get",
                     url:"{:url('shop.order/fahuo')}",
                     data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('shop.order/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+
+        function fahuo(id) {
+            layer.prompt({
+              formType: 2,
+              title: '请输入发货信息',
+              area: ['200px', '100px'] //自定义文本域宽高
+            }, function(value, index, elem){
+              $.ajax({
+                    type:"get",
+                    url:"{:url('shop.order/fahuo')}",
+                    data:{id:id,information:value},
                     success:function(res) {
                         layer.msg(res.msg);
                         if (res.code == 1) {

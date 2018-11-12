@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <meta name="author" content="order by dede58.com"/>
+		<title>小米商城-个人中心</title>
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/style.css">
+	</head>
+{include file="common/header" /}
+<!-- self_info -->
+	<div class="grzxbj">
+		<div class="selfinfo center">
+		<div class="rtcont fr">
+			<div class="grzlbt ml40">签到领积分</div>
+			<div class="grzlbt ml40"><span>已连续签到{$day}天<span style="margin-left: 100px"> 签到+{$inte}</span><span style="margin-left: 100px"><a href="javascript:;" onclick="qiandao({$inte})">签到</a></span></div>
+		</div>
+		
+		<div class="clear"></div>
+		</div>
+	</div>
+<!-- self_info -->
+		
+	{include file="common/footer" /}
+	</body>
+</html>
+
+<script type="text/javascript">
+        function qiandao(inte) {
+        	if ({$appUser == ''}) {
+        		layer.msg("请先登录");
+        	}
+                $.ajax({
+                    type:"get",
+                    url:"{:url('index/qiandao')}",
+                    data:{inte:inte},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('index/integral')}";
+                        },1500)
+                    }
+                    }
+                });
+        }
+</script>

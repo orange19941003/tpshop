@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <meta name="author" content="order by dede58.com"/>
+		<title>小米商城-我的订单</title>
+		<link rel="stylesheet" type="text/css" href="__PUBLIC__/css/style.css">
+	</head>
+	<body>
+	{include file="common/header" /}
+<!-- self_info -->
+	<div class="grzxbj">
+		<div class="selfinfo center">
+		<div class="lfnav fl">
+			<div class="ddzx">订单中心</div>
+			<div class="subddzx">
+				<ul>
+					<li><a href="{:url('index/order')}" style="color:#ff6700;font-weight:bold;">我的订单</a></li>
+				</ul>
+			</div>
+			<div class="ddzx">个人中心</div>
+			<div class="subddzx">
+				<ul>
+					{if condition="$appUser neq ''"}
+					<li><a href="{:url('index/self')}">我的个人中心</a></li>
+					{/if}
+				</ul>
+			</div>
+		</div>
+		<div class="rtcont fr">
+			<div class="ddzxbt">交易订单</div>
+			{foreach name="orders" item="order"}
+			<div class="ddxq">
+				<div class="ddspt fl"><img src="__IMG__{$order['img']}" alt="" style="width: 80px;height: 80px"></div>
+				<div class="ddbh fl">收货人:{$order['name']}</div>
+				<div class="ztxx fr">
+					<ul>
+						<li>
+							{if condition="$order['status'] eq 0"}
+							未发货
+							{else/}
+							已发货
+							{/if}
+						</li>
+						<li>积分：{$order['price']}</li>
+						<li>{$order['time']}</li>
+						<li><a href="{:url('index/order_all', ['id'=>$order['id']])}">订单详情></a></li>
+						<div class="clear"></div>
+					</ul>
+				</div>
+				<div class="clear"></div>
+			</div>
+			{/foreach}
+		</div>
+		<div class="clear"></div>
+		</div>
+	</div>
+<!-- self_info -->
+		
+		{include file="common/footer" /}
+	</body>
+</html>

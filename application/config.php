@@ -153,12 +153,12 @@ return [
     // +----------------------------------------------------------------------
 
     // 异常页面的模板文件
-    'exception_tmpl'         => THINK_PATH . 'tpl' . DS . 'think_exception.tpl',
+    'exception_tmpl'         => APP_PATH.'404.html',
 
     // 错误显示信息,非调试模式有效
-    'error_message'          => '页面错误！请稍后再试～',
+    'error_message'          => '再乱输割了你的小鸡鸡～',
     // 显示错误信息
-    'show_error_msg'         => true,
+    'show_error_msg'         => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
 
@@ -239,5 +239,22 @@ return [
         'type'      => 'layui',
         'var_page'  => 'page',
         'list_rows' => 15,
+    ],
+
+    'captcha'  => [
+    // 验证码字符集合
+    'codeSet'  => '0123456789', 
+    // 验证码字体大小(px)
+    'fontSize' => 14, 
+    // 是否画混淆曲线
+    'useCurve' => false, 
+     // 验证码图片高度
+    'imageH'   => 40,
+    // 验证码图片宽度
+    'imageW'   => 98, 
+    // 验证码位数
+    'length'   => 4, 
+    // 验证成功后是否重置        
+    'reset'    => true
     ],
 ];

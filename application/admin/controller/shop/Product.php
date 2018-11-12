@@ -53,6 +53,7 @@ class Product extends Base
 			return $this->fetch('edit');
 		}
 		if (Request::instance()->isAjax()) {
+			$type = input('type');
 			$title = input('title', '');
 			$img = input('img', '');
 			$pro_no = input('pro_no', '');
@@ -83,6 +84,7 @@ class Product extends Base
 			$o_product->price = $price;
 			$o_product->cost = $cost;
 			$o_product->desc = $desc;
+			$o_product->type = $tupe;
 			$res = $o_product->save();
 			if (!$res) {
 				return $this->no('添加失败');
@@ -103,6 +105,7 @@ class Product extends Base
 			return $this->fetch('add');
 		}
 		if (Request::instance()->isAjax()) {
+			$type = input('type');
 			$title = input('title', '');
 			$img = input('img', '');
 			$pro_no = input('pro_no', '');
@@ -132,6 +135,7 @@ class Product extends Base
 			$product->price = $price;
 			$product->cost = $cost;
 			$product->desc = $desc;
+			$product->type = $type;
 			$res = $product->save();
 			if (!$res) {
 				return $this->no('添加失败');

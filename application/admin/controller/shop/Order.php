@@ -135,12 +135,15 @@ class Order extends Base
 	public function fahuo()
 	{
 		$id = input('id');
+		$information = input('information', '');
 		$o_order = shopOrder::where('id', $id)
 			->where('is_del', '1')
 			->find();
 		if (!$o_order) {
 			return $this->no("对象属性错误");
 		}
+		$o_order->admin_id = $this->admin_id;
+		$o_order->information = $information;
 		$o_order->status = 1;
 		$o_order->save();
 

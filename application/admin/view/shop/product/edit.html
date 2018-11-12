@@ -61,6 +61,13 @@
         <input type="text" name="cost" required lay-verify="required" placeholder="￥" autocomplete="off" class="layui-input" value="{$product.cost}">
         </div>
     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型</label>
+        <div class="layui-input-block">
+            <input type="radio" name="type" value="1" title="实物商品" {if condition="$product.type eq 1"}checked{/if}>
+            <input type="radio" name="type" value="0" title="虚拟商品" {if condition="$product.type eq 0"}checked{/if}>
+        </div>
+    </div>
     <div class="layui-form-item layui-form-text">
     <label class="layui-form-label">描述</label>
     <div class="layui-input-block">
