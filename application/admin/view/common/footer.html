@@ -3,8 +3,8 @@
     © layui.com - 底部固定区域
   </div>
 </div>
-<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 <script src="__PUBLIC__/layui/layui.js"></script>
+<script type="text/javascript" src="__PUBLIC__/layui/layui.all.js"></script>
 <script>
 //JavaScript代码区域
 layui.use('element', function(){
@@ -14,7 +14,7 @@ layui.use('element', function(){
 layui.use('layer', function(){
 var layer = layui.layer;
 });
-
+var $ = layui.$;
 layui.use('form', function(){
 var form = layui.form; 
 form.render();

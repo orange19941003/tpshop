@@ -8,7 +8,7 @@ use app\admin\model\Admin as adminUser;
 
 class Base extends Controller
 {
-	public $admin_id;
+	protected $admin_id;
 
 	public function _initialize() 
 	{
@@ -22,7 +22,7 @@ class Base extends Controller
 		$this->assign('adminUser', $adminUser);
 	}
 
-	public function yes($msg)
+	protected function yes($msg)
 	{
 		$data = array();
 		$data['msg'] = $msg;
@@ -31,7 +31,7 @@ class Base extends Controller
 		return $data;
 	}
 
-	public function no($msg)
+	protected function no($msg)
 	{
 		$data = array();
 		$data['msg'] = $msg;
