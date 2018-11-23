@@ -19,6 +19,7 @@ class Cate extends Base
 
 	public function add()
 	{
+		header("Content-type:text/html;charset=utf-8");
 		$cate = new shopCate;
 		if (Request::instance()->isGet()) {
 			$titles = $cate->where('status', '1')
@@ -96,6 +97,11 @@ class Cate extends Base
 		}
 		$o_cate->status = 0;
 		$o_cate->save();
+		$o_products = $o_cate->product()->where('status', '1')->select();
+		foreach ($o_products as $vv) {
+			$vv->status = 0;
+			$vv->save();
+		}
 
 		return $this->yes("删除成功");
 

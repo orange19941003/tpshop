@@ -1,0 +1,48 @@
+{include file="common/header" /}
+<style type="text/css">
+    img {
+        height: 50px;
+        width: 50px;
+    }
+</style>
+    <div class="layui-body">
+    <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb" lay-separator=">"><a>用户</a><a href="{:url('vip.cate/lst')}">会员分类管理</a></span>
+            <div style="margin-top: 20px">
+            <a href="{:url('vip.cate/add')}"><button class="layui-btn">增加</button></a>
+            </div>
+        <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>价格</th>
+                    <th>加成</th>
+                    <th>主图</th>
+                    <th>天数</th>
+                    <th>操作人</th>
+                    <th>操作</th>
+                </tr> 
+                </thead>
+                <tbody>
+                    {foreach name="cates" item="vo"}
+                    <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.title}</td>
+                    <td>{$vo.price}(元)</td>
+                    <td>{$vo.addition}(%)</td>
+                    <td>
+                        <img src="__IMG__/{$vo.img}">
+                    </td>
+                    <td>{$vo.day}(天)</td>
+                    <td>{$vo.admin.name}</td>
+                    <td><a href="{:url('vip.cate/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a></td>
+                    </tr>
+                    {/foreach}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+{include file="common/footer" /}

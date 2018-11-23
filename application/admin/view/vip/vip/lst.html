@@ -1,0 +1,88 @@
+{include file="common/header" /}
+</style>
+    <div class="layui-body">
+    <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb" lay-separator=">"><a>用户</a><a href="{:url('vip.vip/lst')}">会员管理</a></span>
+            <form class="layui-form" method="get" id="form2" style="margin-top: 20px">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户名称</label>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="name" placeholder="" autocomplete="off" class="layui-input" value="{$name}">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">类型</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                        <select name="cate_id">
+                        <option value="-1">所有</option>
+                        {foreach name="cates" item="cate"}
+                        <option value="{$cate.id}" {if condition="$cate_id eq $cate.id"}selected="selected"{/if}>{$cate.title}</option>
+                        {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <button class="layui-btn" lay-submit lay-filter="formDemo">查找</button>
+            </form>
+        <table class="layui-table" style="margin-top: 20px">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名称</th>
+                    <th>vip类型</th>
+                    <th>到期时间</th>
+                    <th>创建时间</th>
+                    <th>操作人</th>
+                    <th>操作</th>
+                </tr> 
+                </thead>
+                <tbody>
+                    {foreach name="$vips" item="vo"}
+                    <tr>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.user.name}</td>
+                        <td>
+                            {if condition="$vo.cate_id eq '0'"}
+                            等待处理
+                            {else /}
+                            {$vo.cate.title}
+                            {/if}
+                        </td>
+                        <td>
+                        {if condition="$vo.cate_id eq '0'"}
+                            等待处理
+                        {else /}
+                        {$vo.end_time}
+                        {/if}
+                        </td>
+                        <td>{$vo.add_time}</td>
+                        <td>{$vo.admin.name}</td>
+                        <td><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$vo.id})" value="删除"></td>
+                    </tr>
+                    {/foreach}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+{include file="common/footer" /}
+
+<script type="text/javascript">
+    function del(id) {
+            layer.confirm('确定要删除吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('vip.vip/del')}",
+                    data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('vip.vip/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>

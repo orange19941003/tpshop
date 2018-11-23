@@ -6,6 +6,6 @@ use think\Model;
 class Product extends Model
 {
 	public function cate(){
-		return $this->belongsTo('cate','cate_id');
+		return $this->belongsTo('Cate','cate_id');
 	}
 }

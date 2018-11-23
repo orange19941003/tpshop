@@ -1,0 +1,60 @@
+{include file="common/header" /}
+<style type="text/css">
+    img {
+        height: 50px;
+        width: 100px;
+    }
+</style>
+    <div class="layui-body">
+    <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb" lay-separator=">"><a>杂项</a><a href="{:url('proclamationCate/lst')}">公告管理</a></span>
+            <div style="margin-top: 20px">
+            <a href="{:url('proclamation_cate/add')}"><button class="layui-btn">增加</button></a>
+            </div>
+        <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>标题</th>
+                    <th>创建时间</th>
+                    <th>操作人</th>
+                    <th>操作</th>
+                </tr> 
+                </thead>
+                <tbody>
+                    {foreach name="cates" item="vo"}
+                    <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.title}</td>
+                    <td>{$vo.add_time}</td>
+                    <td>{$vo.admin.name}</td>
+                    <td><a href="{:url('proclamation_cate/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$vo.id})" value="删除"></td>
+                    </tr>
+                    {/foreach}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+{include file="common/footer" /}
+ 
+<script type="text/javascript">
+        function del(id) {
+            layer.confirm('确定要删除吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('proclamationCate/del')}",
+                    data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('proclamationCate/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>

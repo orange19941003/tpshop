@@ -14,4 +14,8 @@ class Cate extends Model
 		return $title;
 	}
 
+	public function product()
+	{
+		return $this->hasMany('Product', 'cate_id')->field('id,status');
+	}
 }

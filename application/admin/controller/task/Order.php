@@ -45,6 +45,7 @@ class order extends Base
 			->where('user_id', $s_user_id_eq, $user_id)
 			->where('task_id', $s_task_id_eq, $task_id)
 			->whereTime('add_time', $s_date_eq, $a_time)
+			->order('add_time', 'desc')
 			->paginate(3, false, [
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);
@@ -60,7 +61,6 @@ class order extends Base
 
 	public function del()
 	{
-
 		$a_id = array();
 		$a_id = input('id');
 		preg_match_all('/\d+/', $a_id, $arr);
@@ -86,7 +86,10 @@ class order extends Base
 			$o_order = TaskOrder::where('id', $vv)
 				->where('status', '1')
 				->find();
-			try{ 
+			if ($o_order->type != 0) {
+				return $this->no('订单已不是未通过状态');
+			}try{ 
+			
 				$o_order->type = 1;
 				$o_order->uid = $this->admin_id;
 				$res = $o_order->save();
@@ -96,9 +99,11 @@ class order extends Base
 				$o_user = User::where('id', $o_order->user_id)
 					->where('status', '1')
 					->find();
-				$integral = Task::where('id', $o_order->task_id)
-					->value('integral');
-				$o_user->integral += $integral;
+				$o_task = Task::where('id', $o_order->task_id)
+					->find();
+				$o_user->integral += $o_task->integral;
+				$o_task->pv += 1;
+				$o_task->save(); 
 				$o_user->save();
 			    Db::commit();
 	        } catch (\Exception $e) {

@@ -1,0 +1,60 @@
+{include file="common/header" /}
+<link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+<div class="layui-body">
+  <!-- 内容主体区域 -->
+  <div style="padding: 15px;">
+  <span class="layui-breadcrumb" lay-separator=">"><a>用户</a><a href="{:url('reward/lst')}">奖励管理</a><a href="">新增</a></span>
+  <form class="layui-form" method="post" id="form1" style="margin-top: 20px">
+    <div class="layui-form-item">
+        <label class="layui-form-label">奖励名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">奖励</label>
+        <div class="layui-input-block">
+            <input type="text" name="reward" required lay-verify="required" placeholder="奖励分数或分成比例" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">奖励类型</label>
+    <div class="layui-input-block">
+        <input type="radio" name="type" title="邀请奖励" value="0" checked>
+        <input type="radio" name="type" title="好友提成奖励" value="1">
+        <input type="radio" name="type" title="其他" value="2">
+    </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input type="button" value="提交" onclick="add()" class="layui-btn edit">
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+  </form>
+
+  </div>
+</div>
+{include file="common/footer" /}
+
+<script src="__PUBLIC__/layui/layui.js"></script>
+
+<script type="text/javascript">
+        function add() {
+            layer.confirm('确定要增加吗?', function(index) {
+                $.ajax({
+                    type:"post",
+                    url:"{:url('reward/add')}",
+                    data: $('#form1').serialize(),
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('reward/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>

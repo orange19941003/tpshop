@@ -1,0 +1,71 @@
+{include file="common/header" /}
+
+    <div class="layui-body">
+    <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb" lay-separator=">"><a>用户</a><a href="{:url('reward/lst')}">奖励管理</a></span>
+            <div style="margin-top: 20px">
+            <a href="{:url('reward/add')}"><button class="layui-btn">增加</button></a>
+            </div>
+        <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>标题</th>
+                    <th>分数</th>
+                    <th>类型</th>
+                    <th>修改时间</th>
+                    <th>新增时间</th>
+                    <th>操作人</th>
+                    <th>操作</th>
+                </tr> 
+                </thead>
+                <tbody>
+                {foreach name="rewards" item="vo"}
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.title}</td>
+                    <td>{$vo.reward}</td>
+                    <td>
+                        {if condition="$vo.type eq '0'"}
+                        邀请奖励
+                        {elseif condition="$vo.type eq '1'"}
+                        好友提成奖励
+                        {elseif condition="$vo.type eq '2'"}
+                        其他
+                        {/if}
+                    </td>
+                    <td>{$vo.audit_time}</td>
+                    <td>{$vo.add_time}</td>
+                    <td>{$vo.admin.name}</td>
+                    <td><a href="{:url('reward/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$vo.id})" value="删除"></td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        {$rewards->render()}
+        </div>
+    </div>
+
+{include file="common/footer" /}
+ 
+<script type="text/javascript">
+        function del(id) {
+            layer.confirm('确定要删除吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('reward/del')}",
+                    data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('reward/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>
+

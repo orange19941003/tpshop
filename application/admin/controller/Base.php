@@ -40,6 +40,13 @@ class Base extends Controller
 		return $data;
 	}
 
+	protected function time($time)
+	{
+		$time = date("Y-m-d H-i-s", $time);
+
+		return $time;
+	}
+
 	//无限级分类排序
 	public function sort($data,$pid=0,$level=0){
 	    static $arr = [];

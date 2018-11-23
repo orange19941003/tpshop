@@ -1,5 +1,5 @@
 <?php
-namespace app\admin\model\Task;
+namespace app\admin\model\task;
 
 use think\Model;
 use app\admin\model\Admin;
@@ -17,6 +17,6 @@ class Task extends Model
 
 	public function cate()
 	{
-		return $this->belongsTo('taskCate','cate_id');
+		return $this->belongsTo('TaskCate','cate_id');
 	}
 }

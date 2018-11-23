@@ -82,7 +82,12 @@ class Cate extends Base
 		if (!$res) {
 			return $this->no('删除失败');
 		}
-
+		$o_tasks = $o_cate->task()->where('status', '1')->select();
+		foreach ($o_tasks as $vv) {
+			$vv->status = 0;
+			$vv->save();
+		}
+		
 		return $this->yes('删除成功');
 	}
 }

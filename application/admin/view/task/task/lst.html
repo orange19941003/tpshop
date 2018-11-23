@@ -1,5 +1,11 @@
 {include file="common/header" /}
 
+<style type="">
+    img {
+        width: 100px;
+        height: 100px;
+    }
+</style>
     <div class="layui-body">
     <!-- 内容主体区域 -->
         <div style="padding: 15px;">
@@ -37,6 +43,9 @@
                             <th>标题</th>
                             <th>分数</th>
                             <th>所属分类</th>
+                            <th>审核周期</th>
+                            <th>任务主图</th>
+                            <th>是否推荐</th>
                             <th>添加时间</th>
                             <th>修改时间</th>
                             <th>操作人</th>
@@ -51,6 +60,19 @@
                             <td>{$task.title}</td>
                             <td>{$task.integral}</td>
                             <td>{$task.cate.title}</td>
+                            <td>{$task.cycle}</td>
+                            <td>
+                                {if condition="$task.img neq ''"}
+                                <img src="__IMG__/{$task.img}">
+                                {/if}
+                            </td>
+                            <td>
+                                {if condition="$task.recommend eq '0'"}
+                                否
+                                {elseif condition="$task.recommend eq '1'"}
+                                是
+                                {/if}
+                            </td>
                             <td>{$task.add_time|date="Y-m-d H:i:s",###}</td>
                             {if condition="$task.audit_time neq '0'"}
                             <td>{$task.audit_time|date="Y-m-d H:i:s",###}</td>
@@ -58,7 +80,7 @@
                             <td>暂未修改</td>
                             {/if}
                             <td>{$task->getAdmin($task->uid)}</td>
-                            <td><a href="{:url('task.task/edit', ['id'=>$task.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$task.id})" value="删除"></td>
+                            <td><a href="{:url('task.task/edit', ['id'=>$task.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$task.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 50px;margin-top: 20px" onclick="recommend({$task.id})" value="推荐"></td>
                         </tr>
                         {/foreach}
                     </tbody>
@@ -120,6 +142,24 @@
                     url:"{:url('task.task/del')}",
                     data:{id:list},
                     traditional: true,
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('task.task/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+
+        function recommend(id) {
+            layer.confirm('确定要推荐吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('task.task/recommend')}",
+                    data:{id:id},
                     success:function(res) {
                         layer.msg(res.msg);
                         if (res.code == 1) {

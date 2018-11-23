@@ -1,4 +1,10 @@
 {include file="common/header" /}
+<style type="text/css"> 
+img{
+  width: 100px;
+  height: 100px;
+}
+</style>
 <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
 
 <div class="layui-body">
@@ -29,6 +35,20 @@
         </select>  
     </div>
   </div>
+   <div class="layui-form-item">
+    <label class="layui-form-label">审核周期</label>
+    <div class="layui-input-block">
+      <input type="text" name="cycle" required lay-verify="required" placeholder="例如：1-2个工作日" autocomplete="off" class="layui-input" value="{$task.cycle}">
+    </div>
+  </div>
+  <div class="layui-form-item img">
+        <label class="layui-form-label" style="margin-top: 30px">任务主图</label>
+    <div class="layui-input-block">
+        <button type="button" class="layui-btn" id="test1">
+            <i class="layui-icon">&#xe67c;</i>上传任务主图
+        </button>
+        <img src="__IMG__/{$task.img}">
+    </div>
   <div class="layui-form-item">
     <label class="layui-form-label">任务描述</label>
     <div class="layui-input-block">
@@ -38,6 +58,7 @@
   <div class="layui-form-item">
     <div class="layui-input-block">
       <input type="hidden" name="id" value="{$task.id}">
+      <input type="hidden" name="img" value="" id="input-img">
       <input type="button" value="提交" onclick="add()" class="layui-btn edit">
       <button type="reset" class="layui-btn layui-btn-primary">重置</button>
     </div>
@@ -49,6 +70,27 @@
 {include file="common/footer" /}
 
 <script src="__PUBLIC__/layui/layui.js"></script>
+<script>
+layui.use('upload', function(){
+  var upload = layui.upload;
+   
+  //执行实例
+  var uploadInst = upload.render({
+    elem: '#test1' //绑定元素
+    ,url: '{:url('api/upload/index')}' //上传接口
+    ,done: function(res){
+      if (res.code == 1){
+        layer.msg("图片上传成功");
+      }
+        $('#input-img').val(res.url);
+        $("img").attr("src","__IMG__/" + res.url);
+    }
+    ,error: function(){
+       layer.msg('图片上传失败');//请求异常回调
+    }
+  });
+});
+</script>
 
 <script type="text/javascript">
         function add() {

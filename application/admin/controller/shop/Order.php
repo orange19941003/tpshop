@@ -14,6 +14,7 @@ class Order extends Base
 	public function lst() 
 	{
 		$o_orders = shopOrder::where('is_del', '1')
+			->order('time', 'desc')
 			->paginate(3, false, [
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);

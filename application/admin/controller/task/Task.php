@@ -18,6 +18,7 @@ class Task extends Base
 		$o_tasks = adminTask::where('status', '1')
 			->where('title', $s_title_eq, $title)
 			->where('cate_id', $s_cate_id_eq, $cate_id)
+			->order('add_time', 'desc')
 			->paginate(3, false, [
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);
@@ -46,6 +47,14 @@ class Task extends Base
 			$inte = input('inte', '');
 			$cate_id = input('cate_id', '');
 			$content = input('content', '');
+			$img = input('img', '');
+			$cycle = input('cycle', '');
+			if (empty($cycle)) {
+				return $this->no('请输入审核周期');
+			}
+			if (empty($img)) {
+				return $this->no('请上传任务主图');
+			}
 			if (empty($title)) {
 				return $this->no('请输入任务标题');
 			}
@@ -60,6 +69,8 @@ class Task extends Base
 			}
 			$task = new adminTask;
 			$task->title = $title;
+			$task->img = $img;
+			$task->cycle = $cycle;
 			$task->integral = $inte;
 			$task->cate_id = $cate_id;
 			$task->content = $content;
@@ -94,6 +105,11 @@ class Task extends Base
 			$inte = input('inte', '');
 			$cate_id = input('cate_id', '');
 			$content = input('content', '');
+			$cycle = input('cycle', '');
+			$img = input('img', '');
+			if (empty($cycle)) {
+				return $this->no('请输入审核周期');
+			}
 			if (empty($title)) {
 				return $this->no('请输入任务标题');
 			}
@@ -111,9 +127,13 @@ class Task extends Base
 				->find();
 			$o_task->title = $title;
 			$o_task->integral = $inte;
+			$o_task->cycle = $cycle;
 			$o_task->cate_id = $cate_id;
 			$o_task->content = $content;
 			$o_task->uid = $this->admin_id;
+			if (!empty($img)) {
+				$o_task->img = $img;
+			}
 			$o_task->audit_time = time();
 			$res = $o_task->save();
 			if (!$res) {
@@ -139,5 +159,20 @@ class Task extends Base
 		}
 
 		return $this->yes('删除成功');	
+	}
+
+	public function recommend()
+	{
+		$id = input('id');
+		$o_task = adminTask::where('id', $id)
+			->where('status', '1')
+			->find();
+		$o_task->recommend = 1;
+		$res = $o_task->save();
+		if (!$res) {
+			return $this->no("操作失败");
+		}
+
+		return $this->yes("推荐成功");
 	}
 }

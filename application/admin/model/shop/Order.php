@@ -19,7 +19,7 @@ class Order extends Model
 	public function product($id)
 	{
 		$title = Product::where('id', $id)
-			->where('status', '1')
+			//->where('status', '1')
 			->value('title');
 
 		return $title;

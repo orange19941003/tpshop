@@ -1,5 +1,5 @@
 <?php
-namespace app\admin\model\Task;
+namespace app\admin\model\task;
 
 use think\Model;
 use app\admin\model\User;

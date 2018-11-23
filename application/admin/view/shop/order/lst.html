@@ -67,7 +67,7 @@
                         {$order->admin($order.admin_id)}
                         {/if}
                     </td>
-                    <td><a href="{:url('shop.order/edit', ['id'=>$order.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$order.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 20px" onclick="fahuo({$order.id})" value="{if condition="$order.status eq 0"}发货{else/}修改{/if}"></td>
+                    <td><a href="{:url('shop.order/edit', ['id'=>$order.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$order.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 40px;margin-top: 10px" onclick="fahuo({$order.id})" value="{if condition="$order.status eq 0"}发货{else/}修改{/if}"></td>
                 </tr>
                 {/foreach}
             </tbody>
