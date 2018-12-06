@@ -1,0 +1,52 @@
+{include file="common/header" /}
+<link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding:15px;">
+        <span class="layui-breadcrumb" lay-separator=">"><a>商品</a><a href="{:url('shop.type/lst')}">商品型号管理</a><a href="#">修改</a></span>
+        <form class="layui-form" method="post" id="form1" style="margin-top: 20px">
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品型号</label>
+                <div class="layui-input-block">
+                <input type="text" name="type" required  lay-verify="required" placeholder="请输入商品型号" autocomplete="off" class="layui-input" value="{$type->type}">
+            </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">权重</label>
+                <div class="layui-input-block">
+                <input type="text" name="weight" required lay-verify="required" placeholder="请输入权重" autocomplete="off" class="layui-input" value="{$type->weight}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+            <div class="layui-input-block">
+            <input type="hidden" name="id" value="{$type->id}">
+            <input type="button" value="提交" onclick="edit()" class="layui-btn edit">
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+            </div>
+        </form>
+    </div>
+</div>
+{include file="common/footer" /}
+
+<script src="__PUBLIC__/layui/layui.js"></script>
+
+<script type="text/javascript">
+        function edit() {
+            layer.confirm('确定要增加吗?', function(index) {
+                $.ajax({
+                    type:"post",
+                    url:"{:url('shop.type/edit')}",
+                    data: $('#form1').serialize(),
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('shop.type/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>

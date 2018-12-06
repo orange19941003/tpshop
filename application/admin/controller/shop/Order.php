@@ -15,7 +15,7 @@ class Order extends Base
 	{
 		$o_orders = shopOrder::where('is_del', '1')
 			->order('time', 'desc')
-			->paginate(3, false, [
+			->paginate(10, false, [
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);
 		$this->assign('orders', $o_orders);
@@ -50,7 +50,7 @@ class Order extends Base
 				return $this->no("商品不存在");
 			}
 			$order = new shopOrder;
-			$order->user_name = $user_name;
+			$order->user_id = $o_user->id;
 			$order->pro_id = $pro_id;
 			$order->tel = $tel;
 			$order->name = $name;
@@ -102,7 +102,7 @@ class Order extends Base
 			$o_order = shopOrder::where('id', $id)
 				->where('is_del', '1')
 				->find();
-			$o_order->user_name = $user_name;
+			$o_order->user_id = $o_user->id;
 			$o_order->pro_id = $pro_id;
 			$o_order->tel = $tel;
 			$o_order->name = $name;

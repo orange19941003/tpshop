@@ -2,16 +2,15 @@
 namespace app\admin\controller;
 
 use think\Request;
-use think\Controller;
 use app\admin\controller\Base;
-use app\admin\model\Reward as adminReward;
+use app\admin\model\Reward as shopReward;
 
 class Reward extends Base
 {
-	public function lst() 
+	public function lst()
 	{
-		$o_rewards = adminReward::where('status', '1')
-			->paginate(3);
+		$o_rewards = shopReward::where('status', '1')
+			->select();
 		$this->assign('rewards', $o_rewards);
 
 		return $this->fetch('lst');
@@ -19,104 +18,65 @@ class Reward extends Base
 
 	public function edit()
 	{
-		if (Request::instance()->isAjax()) {
-			$title = input('title', '');
-			$s_reward = input('reward', '');
-			$type = input('type', '');
-			$id = input('id');
-			if (empty($title)) {
-				return $this->no("奖励标题不能为空");
-			}
-			if (empty($s_reward)) {
-				return $this->no("奖励不能为空");
-			}
-			if ($type == '') {
-				return $this->no("请选择奖励类型");
-			}
-
-			$reward = adminReward::where('id', $id)
-				->where('status', '1')
-				->find(); 
-			$reward->title = $title;
-			$reward->reward = $s_reward;
-			$reward->type = $type;
-			$reward->uid = $this->admin_id;
-			$time = time();
-			$reward->audit_time = $this->time($time);
-			$res = $reward->save();
-			if (!$res) {
-				return $this->no('修改失败');
-			}
-
-			return $this->yes('修改成功');
-
-		}
-		if (Request::instance()->isGet()) {
-			$id = input('id');
-			$o_reward = adminReward::where('id', $id)
-				->where('status', '1')
-				->find();
-			if (!$o_reward) {
+		$id = input('id', '');
+		if (empty($id)) {
 				return $this->no("对象属性错误");
 			}
-			$this->assign('reward', $o_reward);
+	    $reward = shopReward::where('id', $id)
+			->where('status', '1')
+			->find();
 
-			return $this->fetch('edit');			
+		if (Request::instance()->isGet()) {
+			$this->assign('reward', $reward);
+
+			return $this->fetch('edit');
 		}
-	}
-
-	public function add()
-	{
 		if (Request::instance()->isAjax()) {
-			$title = input('title', '');
-			$s_reward = input('reward', '');
-			$type = input('type', '');
-			if (empty($title)) {
-				return $this->no("奖励标题不能为空");
-			}
-			if (empty($s_reward)) {
-				return $this->no("奖励不能为空");
-			}
-			if ($type == '') {
-				return $this->no("请选择奖励类型");
-			}
-
-			$reward = new adminReward; 
-			$reward->title = $title;
-			$reward->reward = $s_reward;
-			$reward->type = $type;
+			$addition_one = input('addition_one', 0);
+			$addition_two = input('addition_two', 0);
+			$addition_three = input('addition_three', 0);
+			$reward->addition_one = $addition_one;
+			$reward->addition_two = $addition_two;
+			$reward->addition_three = $addition_three;
 			$reward->uid = $this->admin_id;
 			$time = time();
 			$reward->add_time = $this->time($time);
 			$res = $reward->save();
 			if (!$res) {
-				return $this->no('新增失败');
+				return $this->no("修改失败");
 			}
 
-			return $this->yes('新增成功');
-
-		}
-		if (Request::instance()->isGet()) {
-
-			return $this->fetch('add');			
+			return $this->yes("修改成功");
 		}
 	}
 
-	public function del()
+	public function add()
 	{
-		$id = input('id');
-		$o_reward = adminReward::where('id', $id)
-			->where('status', '1')
-			->find();
-		if (!$o_reward) {
-			return $this->no("对象属性错误");
+		if (Request::instance()->isGet()) {
+			$o_rewards = shopReward::where('status', '1')
+				->select();
+			if (count($o_rewards) != '0') {
+				exception('异常操作', 100006);
+			} 
+			return $this->fetch('add');
 		}
-		$o_reward->status = 0;
-		$res = $o_reward->save();
-		if (!$res) {
-			return $this->no("删除失败");
-		}
+		if (Request::instance()->isAjax()) {
+			$addition_one = input('addition_one', 0);
+			$addition_two = input('addition_two', 0);
+			$addition_three = input('addition_three', 0);
+			$reward = new shopReward;
+			$reward->addition_one = $addition_one;
+			$reward->addition_two = $addition_two;
+			$reward->addition_three = $addition_three;
+			$reward->uid = $this->admin_id;
+			$time = time();
+			$reward->add_time = $this->time($time);
+			$res = $reward->save();
+			if (!$res) {
+				return $this->no("新增失败");
+			}
 
-		return $this->yes("删除成功");
+			return $this->yes("新增成功");
+		}
 	}
 }

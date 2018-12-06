@@ -16,9 +16,9 @@
             <thead>
             <tr>
                 <th>ID</th>
+                <th>名称</th>
                 <th>父类名称</th>
                 <th>权重</th>
-                <th>名称</th>
                 <th>操作</th>
             </tr> 
             </thead>
@@ -26,11 +26,11 @@
                 {foreach name="cates" item="cate"}
                 <tr>
                     <td>{$cate.id}</td>
+                    <td>{$cate.title}</td>
                     <td>
                        {$cate->getTitle($cate->pid)}
                     </td>
                     <td>{$cate.weight}</td>
-                    <td>{$cate.title}</td>
                     <td><a href="{:url('shop.cate/edit', ['id'=>$cate.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$cate.id})" value="删除"></td>
                 </tr>
                 {/foreach}

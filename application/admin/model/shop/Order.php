@@ -7,21 +7,20 @@ use app\admin\model\shop\Product;
 
 class Order extends Model
 {
-	public function admin($id)
+	public function admin()
 	{
-		$name = Admin::where('id', $id)
-			->where('status', '1')
-			->value('name');
 
-		return $name;
+		return $this->belongsTo('app\admin\model\Admin', 'admin_id');
 	}
 
-	public function product($id)
+	public function product()
 	{
-		$title = Product::where('id', $id)
-			//->where('status', '1')
-			->value('title');
 
-		return $title;
+		return $this->belongsTo('Product', 'pro_id');
+	}
+
+	public function user(){
+		
+		return $this->belongsTo('app\admin\model\User', 'user_id');
 	}
 }

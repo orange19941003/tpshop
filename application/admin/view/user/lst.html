@@ -29,18 +29,16 @@
             <a href="{:url('user/add')}"><button class="layui-btn">增加</button></a>
             </div>
         <table class="layui-table">
-                <colgroup>
-                    <col width="150">
-                    <col width="200">
-                    <col>
-                </colgroup>
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>昵称</th>
                     <th>电话号码</th>
-                    <th>积分</th>
-                    <th>邀请人</th>
+                    <th>可提现佣金</th>
+                    <th>冻结佣金</th>
+                    <th>一级邀请人</th>
+                    <th>二级邀请人</th>
+                    <th>三级邀请人</th>
                     <th>vip</th>
                     <th>操作人</th>
                     <th>操作</th>
@@ -52,12 +50,27 @@
                     <td>{$user.id}</td>
                     <td>{$user.name}</td>
                     <td>{$user.tel}</td>
-                    <td>{$user.integral}</td>
+                    <td>{$user.money}</td>
+                    <td>{$user.fmoney}</td>
                     <td>
                         {if condition="$user.pid eq '0'"}
                         自注册用用户
                         {else /}
-                        {$user.getParent.name}
+                        {$user.parent.name}
+                        {/if}
+                    </td>
+                    <td>
+                        {if condition="$user.ppid eq '0'"}
+                        无
+                        {else /}
+                        {$user.pparent.name}
+                        {/if}
+                    </td>
+                    <td>
+                        {if condition="$user.ppid eq '0'"}
+                        无
+                        {else /}
+                        {$user.ppparent.name}
                         {/if}
                     </td>
                     <td>
@@ -68,7 +81,7 @@
                         {/if}
                     </td>
                     <td>{$user.admin.name}</td>
-                    <td><a href="{:url('user/edit', ['id'=>$user.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$user.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 20px" onclick="chongzhi({$user.id})" value="充值积分">
+                    <td><a href="{:url('user/edit', ['id'=>$user.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$user.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 20px" onclick="chongzhi({$user.id})" value="充值">
                         <input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 20px" onclick="vip({$user.id})" value="成为vip">
                     </td>
                 </tr>
@@ -145,12 +158,12 @@
         }
         function chongzhi(id) {
             var index = layer.prompt({
-                title : '请输入你要充值的积分数'
+                title : '请输入你要充值的佣金数'
             },function(val, index){
                 $.ajax({
                     type:"get",
                     url:"{:url('user/chongzhi')}",
-                    data:{id:id,integral:val},
+                    data:{id:id,money:val},
                     success:function(res) {
                         layer.msg(res.msg);
                         if (res.code == 1) {

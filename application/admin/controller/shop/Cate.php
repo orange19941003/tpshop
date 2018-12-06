@@ -3,7 +3,7 @@ namespace app\admin\controller\shop;
 
 use think\Request;
 use app\admin\controller\Base;
-use app\admin\model\shop\Cate as shopCate;
+use app\admin\model\shop\ShopCate as shopCate;
 
 class Cate extends Base
 {
@@ -11,7 +11,7 @@ class Cate extends Base
 	{
 		$o_cates = shopCate::where('status', '1')
 			->where('status', '1')
-			->paginate(3);
+			->paginate(10);
 		$this->assign('cates', $o_cates);
 
 		return $this->fetch('lst');
@@ -23,6 +23,7 @@ class Cate extends Base
 		$cate = new shopCate;
 		if (Request::instance()->isGet()) {
 			$titles = $cate->where('status', '1')
+				->where('level', '1')
 				->order('weight', 'desc')
 				->select();
 			$this->assign('titles', $titles);
@@ -39,6 +40,14 @@ class Cate extends Base
 			$cate->title = $title;
 			$cate->weight = $weight;
 			$cate->pid = $pid;
+			if ($pid == '0') {
+				$cate->level = 1;
+			} else {
+				$pcate_level = shopCate::where('id', $pid)
+					->where('status', '1')
+					->value('level');
+				$cate->level = $pcate_level + 1;
+			}
 			$res = $cate->save();
 			if (!$res) {
 				return $this->no("增加失败");
@@ -54,11 +63,12 @@ class Cate extends Base
 		$id = input('id');
 		if (Request::instance()->isGet()) {
 			$titles = $cate->where('status', '1')
+				->where('level', '1')
 				->order('weight', 'desc')
 				->select();
 			$o_cate = $cate->where('id', $id)
 				->where('status', '1')
-				->find();
+				->find(); 
 			$this->assign('cate', $o_cate);
 			$this->assign('titles', $titles);
 
@@ -77,6 +87,14 @@ class Cate extends Base
 			$o_cate->title = $title;
 			$o_cate->weight = $weight;
 			$o_cate->pid = $pid;
+			if ($pid == '0') {
+				$o_cate->level = 1;
+			} else {
+				$pcate_level = shopCate::where('id', $pid)
+					->where('status', '1')
+					->value('level');
+				$o_cate->level = $pcate_level + 1;
+			}
 			$res = $o_cate->save();
 			if (!$res) {
 				return $this->no("修改失败");

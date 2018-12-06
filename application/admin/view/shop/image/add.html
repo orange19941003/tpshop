@@ -1,0 +1,110 @@
+{include file="common/header" /}
+<link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+<style type="text/css">
+    #upload_img_list {
+    margin: 10px 0 0 0
+}
+#upload_img_list dd {
+    position: relative;
+    margin: 0 10px 10px 0;
+    float: left
+}
+#upload_img_list .operate {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1
+}
+#upload_img_list .operate i {
+    cursor: pointer;
+    background: #2F4056;
+    padding: 2px;
+    line-height: 15px;
+    text-align: center;
+    color: #fff;
+    margin-left: 1px;
+    float: left;
+    filter: alpha(opacity=80);
+    -moz-opacity: .8;
+    -khtml-opacity: .8;
+    opacity: .8
+}
+#upload_img_list dd .img {
+    max-height: 150px;
+    max-width: 500px
+}
+</style>
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding: 15px;">
+        <span class="layui-breadcrumb" lay-separator=">"><a>商品</a><a href="{:url('shop.image/lst')}">图片管理</a><a href="#">新增</a></span>
+<form class="layui-form" method="post" id="form1" style="margin-top: 20px">
+    <div class="layui-form-item img">
+        <label class="layui-form-label">商品主图</label>
+    <div class="layui-input-block">
+        <button type="button" class="layui-btn" id="test1">
+            <i class="layui-icon">&#xe67c;</i>上传图片
+        </button>
+        <div id="upload_img_list"> </div>
+    </div>
+    </div>
+    <div class="layui-form-item">
+    <div class="layui-input-block">
+    <input type="hidden" name="id" value="{$id}"> 
+    <input type="button" value="提交" onclick="add()" class="layui-btn edit">
+    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+    </div>
+</form>
+ 
+    </div>
+</div>
+{include file="common/footer" /}
+
+<script src="__PUBLIC__/layui/layui.js"></script>
+<script>
+layui.use('upload', function(){
+  var upload = layui.upload;
+   
+  //执行实例
+  var uploadInst = upload.render({
+    elem: '#test1' //绑定元素
+    ,url: '{:url('api/upload/index')}' //上传接口
+    ,multiple: true
+    ,done: function(res){
+      if (res.code == 1){
+        layer.msg("图片上传成功");
+      }
+        $('#upload_img_list').append('<dd class="item_img" id="' + res.id + '"><div class="operate"><i onclick=UPLOAD_IMG_DEL("' + res.id + '") class="close layui-icon"></i></div><img src="__IMG__' + res.url + '" class="img" ><input type="hidden" name="img[]" value="' + res.url + '" /></dd>');
+    }
+    ,error: function(){
+       layer.msg('图片上传失败');//请求异常回调
+    }
+  });
+});
+/*
+删除上传图片
+*/
+function UPLOAD_IMG_DEL(divs) {
+    $("#"+divs).remove();
+}
+</script>
+<script type="text/javascript">
+    function add() {
+        layer.confirm('确定要增加吗?', function(index) {
+            $.ajax({
+                type:"post",
+                url:"{:url('shop.image/add')}",
+                data: $('#form1').serialize(),
+                success:function(res) {
+                    layer.msg(res.msg);
+                    if (res.code == 1) {
+                    setTimeout(function(){
+                        location.href = "{:url('shop.image/lst')}";
+                    },1500)
+                }
+                }
+            });
+        });
+    }
+</script>

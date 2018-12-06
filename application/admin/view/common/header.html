@@ -3,25 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>layout 后台大布局 - Layui</title>
+  <title>商城后台</title>
   <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css">
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
   <div class="layui-header">
-    <div class="layui-logo">K歌后台</div>
+    <div class="layui-logo">商城后台</div>
     <!-- 头部区域（可配合layui已有的水平导航） -->
     <ul class="layui-nav layui-layout-left">
-      <li class="layui-nav-item"><a href="{:url('sys.acl/lst')}">权限管理</a></li>
       <li class="layui-nav-item"><a href="{:url('shop.product/lst')}">商品管理</a></li>
       <li class="layui-nav-item"><a href="{:url('admin/lst')}">后台用户</a></li>
-      <li class="layui-nav-item">
-        <a href="javascript:;">系统管理</a>
-        <dl class="layui-nav-child">
-          <dd><a href="{:url('sys.acl/lst')}">权限管理</a></dd>
-          <dd><a href="">角色管理</a></dd>
-        </dl>
-      </li>
     </ul>
     <ul class="layui-nav layui-layout-right">
       <li class="layui-nav-item">
@@ -46,36 +38,29 @@
           <a class="" href="javascript:;">用户</a>
           <dl class="layui-nav-child">
             <dd><a href="{:url('user/lst')}">用户管理</a></dd>
-            <dd><a href="{:url('reward/lst')}">奖励管理</a></dd>
             <dd><a href="{:url('vip.cate/lst')}">vip分类管理</a></dd>
             <dd><a href="{:url('vip.vip/lst')}">vip管理</a></dd>
+            <dd><a href="{:url('reward/lst')}">分销提成管理</a></dd>
+             <dd><a href="{:url('withdraw/lst')}">提现管理</a></dd>
           </dl>
         </li>
         <li class="layui-nav-item layui-nav-itemed">
           <a href="javascript:;">商品</a>
           <dl class="layui-nav-child">
             <dd><a href="{:url('shop.product/lst')}">商品管理</a></dd>
+            <dd><a href="{:url('shop.type/lst')}">商品型号管理</a></dd>
             <dd><a href="{:url('shop.cate/lst')}">分类管理</a></dd>
+            <dd><a href="{:url('income/lst')}">佣金管理</a></dd>
             <dd><a href="{:url('shop.order/lst')}">订单管理</a></dd>
+            <dd><a href="{:url('shop.image/lst')}">图片管理</a></dd>
+            <dd><a href="{:url('shop.address/lst')}">收货地址管理</a></dd>
           </dl>
         </li>
         <li class="layui-nav-item layui-nav-itemed">
-            <a class="" href="javascript:;">任务</a>
-            <dl class="layui-nav-child">
-                <dd><a href="{:url('task.task/lst')}">任务管理</a></dd>
-                <dd><a href="{:url('task.cate/lst')}">任务分类管理</a></dd>
-                <dd><a href="{:url('task.order/lst')}">任务订单管理</a></dd>
-            </dl>
-        </li>
-        <li class="layui-nav-item layui-nav-itemed">
-            <a class="" href="javascript:;">杂项</a>
-            <dl class="layui-nav-child">
-                <dd><a href="{:url('links/lst')}">友情链接管理</a></dd>
-                <dd><a href="{:url('banner/lst')}">banner图管理</a></dd>
-                <dd><a href="{:url('partner/lst')}">合作商家管理</a></dd>
-                <dd><a href="{:url('proclamation/lst')}">公告管理</a></dd>
-                <dd><a href="{:url('proclamation_cate/lst')}">公告分类管理</a></dd>
-            </dl>
+          <a href="javascript:;">系统</a>
+          <dl class="layui-nav-child">
+            <dd><a href="{:url('sys.banner/lst')}">banner图管理</a></dd>
+          </dl>
         </li>
       </ul>
     </div>

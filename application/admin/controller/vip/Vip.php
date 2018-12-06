@@ -26,7 +26,7 @@ class Vip extends Base
 			->where('cate_id', $s_cate_id_eq, $cate_id)
 			->where('status', '1')
 			->order('add_time', 'desc')
-			->paginate(3, false, [
+			->paginate(10, false, [
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);
         $o_cates = VipCate::all();

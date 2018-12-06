@@ -33,6 +33,9 @@ class Admin extends Base
 			$password = md5($password);
 			$admin = new adminUser;
 			$admin->name = $name;
+			$admin->uid = $this->admin_id;
+			$time = time();
+			$admin->add_time = $this->time($time);
 			$admin->password = $password;
 			$res = $admin->save();
 			if (!$res) {

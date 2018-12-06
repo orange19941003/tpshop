@@ -2,8 +2,8 @@
 namespace app\admin\controller\shop;
 
 use think\Request;
-use app\admin\model\shop\Cate;
 use app\admin\controller\Base;
+use app\admin\model\shop\ShopCate as Cate;
 use app\admin\model\shop\Product as shopProduct;
 
 class Product extends Base
@@ -20,12 +20,13 @@ class Product extends Base
 			->where('cate_id', $s_id_eq, $cate_id)
 			->where('title', $s_title_eq, $title)
 			->where('pro_no', $s_pro_no_eq, $pro_no)
-			->paginate(3, false, [
+			->paginate(10, false, [
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);
 		$o_cates = Cate::where('status', '1')
+			->where('level', '2')
+			->order('weight', 'desc')
 			->select();
-		$o_cates = $this->sort($o_cates);
 		$a_arr = array();
 		$a_arr['products'] = $o_products;
 		$a_arr['cates'] = $o_cates;
@@ -42,6 +43,7 @@ class Product extends Base
 		$product = new shopProduct;
 		if (Request::instance()->isGet()) {
 			$o_cates = Cate::where('status', '1')
+				->where('level', '2')
 				->select();
 			$o_cates = $this->sort($o_cates);
 			$this->assign('cates', $o_cates);
@@ -84,13 +86,13 @@ class Product extends Base
 			$o_product->price = $price;
 			$o_product->cost = $cost;
 			$o_product->desc = $desc;
-			$o_product->type = $tupe;
+			$o_product->type = $type;
 			$res = $o_product->save();
 			if (!$res) {
-				return $this->no('添加失败');
+				return $this->no('修改失败');
 			}
 
-			return $this->yes('添加成功');
+			return $this->yes('修改成功');
 		}
 	}
 
@@ -98,8 +100,8 @@ class Product extends Base
 	{
 		if (Request::instance()->isGet()) {
 			$o_cates = Cate::where('status', '1')
+				->where('level', '2')
 				->select();
-			$o_cates = $this->sort($o_cates);
 			$this->assign('cates', $o_cates);
 
 			return $this->fetch('add');

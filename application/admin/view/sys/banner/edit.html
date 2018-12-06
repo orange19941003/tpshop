@@ -1,0 +1,91 @@
+{include file="common/header" /}
+<style type="text/css">
+    img{
+        width: 100px;
+        height: 100px;
+    }
+</style>
+<link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+<div class="layui-body">
+  <!-- 内容主体区域 -->
+  <div style="padding: 15px;">
+  <span class="layui-breadcrumb" lay-separator=">"><a>杂项</a><a href="{:url('sys.banner/lst')}">banner图管理</a><a href="">新增</a></span>
+  <form class="layui-form" method="post" id="form1" style="margin-top: 20px">
+    <div class="layui-form-item">
+        <label class="layui-form-label">url</label>
+        <div class="layui-input-block">
+            <input type="text" name="url" required lay-verify="required" placeholder="链接地址" autocomplete="off" class="layui-input" value="{$banner.url}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">权重</label>
+        <div class="layui-input-block">
+            <input type="text" name="weight" required lay-verify="required" placeholder="权重（正整数）" autocomplete="off" class="layui-input" value="{$banner.weight}">
+        </div>
+    </div>
+    <div class="layui-form-item img">
+        <label class="layui-form-label">图片</label>
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn" id="test1">
+            <i class="layui-icon">&#xe67c;</i>上传banner图
+        </button>
+        <img src="__IMG__/{$banner.img}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input type="hidden" name="img" value="" id="input-img">
+            <input type="hidden" name="id" value="{$banner.id}">
+            <input type="button" value="提交" onclick="edit()" class="layui-btn edit">
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+  </form>
+
+  </div>
+</div>
+{include file="common/footer" /}
+
+<script src="__PUBLIC__/layui/layui.js"></script>
+
+<script type="text/javascript">
+        function edit() {
+            layer.confirm('确定要修改吗?', function(index) {
+                $.ajax({
+                    type:"post",
+                    url:"{:url('sys.banner/edit')}",
+                    data: $('#form1').serialize(),
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('sys.banner/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>
+<script>
+layui.use('upload', function(){
+  var upload = layui.upload;
+   
+  //执行实例
+  var uploadInst = upload.render({
+    elem: '#test1' //绑定元素
+    ,url: '{:url('api/upload/index')}' //上传接口
+    ,exts: 'jpg|png|jpeg'
+    ,done: function(res){
+      if (res.code == 1){
+        layer.msg("图片上传成功");
+      }
+        $('#input-img').val(res.url);
+        $("img").attr("src","__IMG__/" + res.url);
+    }
+    ,error: function(){
+       layer.msg('图片上传失败');//请求异常回调
+    }
+  });
+});
+</script>

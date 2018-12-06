@@ -8,19 +8,6 @@
                 <a href="{:url('shop.order/add')}"><button class="layui-btn">增加</button></a>
             </div>
         <table class="layui-table">
-            <colgroup>
-                <col width="50">
-                <col width="100">
-                <col width="100">
-                <col width="100">
-                <col width="100">
-                <col width="200">
-                <col width="200">
-                <col width="100">
-                <col width="200">
-                <col width="100">
-                <col width="250">
-            </colgroup>
             <thead>
             <tr>
                 <th>ID</th>
@@ -28,6 +15,7 @@
                 <th>商品名称</th>
                 <th>电话号码</th>
                 <th>收货人</th>
+                <th>订单金额</th>
                 <th>收货地址</th>
                 <th>发货信息</th>
                 <th>是否发货</th>
@@ -40,10 +28,11 @@
                 {foreach name="orders" item="order"}
                 <tr>
                     <td>{$order.id}</td>
-                    <td>{$order.user_name}</td>
-                    <td>{$order->product($order.pro_id)}</td>
+                    <td>{$order.user.name}</td>
+                    <td>{$order.product.title}</td>
                     <td>{$order.tel}</td>
                     <td>{$order.name}</td>
+                    <td>{$order.money}</td>
                     <td>{$order.address}</td>
                     <td>
                         {if condition="$order.information eq ''"}
@@ -55,8 +44,10 @@
                     <td>
                         {if condition="$order.status eq 0"}
                         未发货
-                        {else/}
+                        {elseif condition="$order.status eq 1"}
                         已发货
+                        {elseif condition="$order.status eq 2"}
+                        已收货
                         {/if}
                     </td>
                     <td>{$order.time|date="Y-m-d H:i:s",###}</td>
@@ -64,7 +55,7 @@
                         {if condition="$order.admin_id eq 0"}
                             无
                         {else/}
-                        {$order->admin($order.admin_id)}
+                        {$order.admin.name}
                         {/if}
                     </td>
                     <td><a href="{:url('shop.order/edit', ['id'=>$order.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$order.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 40px;margin-top: 10px" onclick="fahuo({$order.id})" value="{if condition="$order.status eq 0"}发货{else/}修改{/if}"></td>

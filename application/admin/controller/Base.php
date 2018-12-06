@@ -12,7 +12,6 @@ class Base extends Controller
 
 	public function _initialize() 
 	{
-		header("Access-Control-Allow-Origin: *");
 		$res = Session::has('user');
 		if (!$res) {
 			return $this->error('请先登录', 'Login/login');
@@ -42,13 +41,14 @@ class Base extends Controller
 
 	protected function time($time)
 	{
-		$time = date("Y-m-d H-i-s", $time);
+		$time = date("Y-m-d H:i:s", $time);
 
 		return $time;
 	}
 
 	//无限级分类排序
-	public function sort($data,$pid=0,$level=0){
+	public function sort($data,$pid=0,$level=0)
+	{
 	    static $arr = [];
 	    foreach($data as $v){
 	        if($v['pid'] == $pid){
@@ -56,8 +56,9 @@ class Base extends Controller
 	            $arr[] = $v;
 	            $level++;
 	            $this->sort($data,$v['id'],$level);
-	        }       
+	        }
 	    }
+
 	    return $arr;
 	}
 }

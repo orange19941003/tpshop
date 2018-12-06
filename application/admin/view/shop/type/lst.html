@@ -1,0 +1,117 @@
+{include file="common/header" /}
+
+    <div class="layui-body">
+    <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb" lay-separator=">"><a>商品</a><a href="{:url('shop.type/lst')}">商品类型管理</a></span>
+            <form class="layui-form" method="get" id="form2" style="margin-top: 20px">
+                <div class="layui-inline">
+                    <label class="layui-form-label">商品id</label>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="pro_id" placeholder="" autocomplete="off" class="layui-input" value="{$pro_id}">
+                    </div>
+                </div>
+                <button class="layui-btn" lay-submit lay-filter="formDemo">查找</button>
+            </form>
+            <div style="margin-top: 20px">
+            <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="alldel()" value="批量删除">
+            </div>
+        <div class="layui-form">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th width="50px"><input type="checkbox" id="all" lay-skin="primary" lay-filter="allChoose"></th>
+                <th>ID</th>
+                <th>所属商品</th>
+                <th>商品id</th>
+                <th>型号</th>
+                <th>操作人</th>
+                <th>权重</th>
+                <th>添加时间</th>
+                <th>操作</th>
+            </tr> 
+            </thead>
+            <tbody>
+                {foreach name="types" item="type"}
+                <tr>
+                    <td><input type="checkbox" name="type" lay-skin="primary" value="{$type.id}"></td>
+                    <td>{$type.id}</td>
+                    <td>{$type.product.title}</td>
+                    <td>{$type.pro_id}</td>
+                    <td>{$type.type}</td>
+                    <td>{$type.admin.name}</td>
+                    <td>{$type.weight}</td>
+                    <td>{$type.add_time}</td>
+                    <td><a href="{:url('shop.type/edit', ['id'=>$type.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$type.id})" value="删除"></td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        </div>
+        {$types->render()}
+        </div>
+    </div>
+{include file="common/footer" /}
+
+<script type="text/javascript">
+        var form = layui.form;
+        //全选
+        form.on('checkbox(allChoose)', function(data){
+            var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+            child.each(function(index, item){
+              item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+        
+        function alldel() {
+            var check_arr = [];
+            $('input[name=type]:checked').each(function(){
+                check_arr.push($(this).val());
+            });
+            if (check_arr.length == '0') {
+                    layer.msg('请选择你要删除的任务');
+                    return;
+                }
+            layer.confirm('确定要删除吗?', function(index) {
+                var list = JSON.stringify(check_arr);
+                $.ajax({
+                    type:"get",
+                    url:"{:url('shop.type/del')}",
+                    data:{id:list},
+                    traditional: true,
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('shop.type/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>
+
+<script type="text/javascript">
+        function del(id) {
+            layer.confirm('确定要删除吗?', function(index) {
+                var check_arr = [];
+                check_arr.push(id);
+                var list = JSON.stringify(check_arr);
+                $.ajax({
+                    type:"get",
+                    url:"{:url('shop.type/del')}",
+                    data:{id:list},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('shop.type/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>

@@ -22,7 +22,7 @@ class User extends Base
 			->where('vip', $s_vip_eq, $vip)
 			->where('status', '1')
 			->order('add_time', 'desc')
-			->paginate(3, false, [
+			->paginate(10, false, [
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);
         $o_cates = VipCate::all();
@@ -41,7 +41,7 @@ class User extends Base
 			$name = input('name', '');
 			$tel = input('tel', '');
 			$password = input('password', '');
-			$integral = input('integral', '0');
+			$money = input('money', '0');
 			if (empty($name)) {
 				return $this->no("用户名不能为空");
 			}
@@ -73,7 +73,7 @@ class User extends Base
 			$user->password = $password;
 			$user->tel = $tel;
 			$user->uid = $this->admin_id;
-			$user->integral = $integral;
+			$user->money = $money;
 			$time = time();
 			$user->add_time = $this->time($time);
 			$res = $user->save();
@@ -115,7 +115,7 @@ class User extends Base
 			$name = input('name', '');
 			$tel = input('tel', '');
 			$password = input('password', '');
-			$integral = input('integral', '0');
+			$money = input('money', '0');
 			if (empty($name)) {
 				return $this->no("用户名不能为空");
 			}
@@ -143,7 +143,7 @@ class User extends Base
 			if (!empty($password)) {
 				$o_user->password = md5($password);
 			}
-			$o_user->integral = $integral;
+			$o_user->money = $money;
 			$o_user->name = $name;
 			$o_user->tel = $tel;
 			$res = $o_user->save();
@@ -167,14 +167,14 @@ class User extends Base
 	public function chongzhi()
 	{
 		$id = input('id');
-		$integral = input('integral');
+		$money = input('money');
 		$o_user = appUser::where('id', $id)
 			->where('status', '1')
 			->find();
 		if (!$o_user) {
 			return $this->no("对象属性错误");
 		}
-		$o_user->integral += $integral;
+		$o_user->money += $money;
 		$o_user->uid = $this->admin_id;
 		$res = $o_user->save();
 		if (!$res) {
@@ -182,19 +182,6 @@ class User extends Base
 		} 
 
 		return $this->yes("充值成功");
-	}
-
-	private function findparent($pid, $inte, $level=1)
-	{
-		$o_user = appUser::where('id', $pid)
-			->find();
-		if (!$o_user || $level == 4) {
-			return 0;
-		}
-		$o_user->integral = floor(10/$level)*0.01*$inte;
-		$id = $o_user->id;
-		$level++;
-		$this->find($id, $inte, $level); 
 	}
 
 	public function vip()
@@ -234,6 +221,7 @@ class User extends Base
 			if (!$res) {
 				return $this->no("操作失败");
 			}
+			
 			return $this->yes("操作成功");
 		} catch (\Exception $e) {
 	             return $this->no($e->getMessage());

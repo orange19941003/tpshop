@@ -5,9 +5,19 @@ use think\Model;
 
 class User extends Model
 {
-	public function getParent()
+	public function parent()
 	{
 		return $this->belongsTo('User','pid');
+	}
+
+	public function pparent()
+	{
+		return $this->belongsTo('User','ppid');
+	}
+
+	public function ppparent()
+	{
+		return $this->belongsTo('User','pppid');
 	}
 
 	public function admin()

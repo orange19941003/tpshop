@@ -49,7 +49,7 @@
                     <th>描述</th>
                     <th>商品主图</th>
                     <th>最低价格</th>
-                    <th>成本</th>
+                    <th>原本价格</th>
                     <th>点击量</th>
                     <th>操作</th>
                 </tr> 
@@ -69,7 +69,7 @@
                     <td>{$vo.price}</td>
                     <td>{$vo.cost}</td>
                     <td>{$vo.pv}</td>
-                    <td><a href="{:url('shop.product/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$vo.id})" value="删除"></td>
+                    <td><a href="{:url('shop.product/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 15px" onclick="del({$vo.id})" value="删除"><a href="{:url('shop.image/add', ['id'=>$vo.id])}" style="margin-left: 15px"><button class="layui-btn">添加图片</button></a><a href="{:url('shop.type/add', ['pro_id'=>$vo.id])}" style="margin-left: 15px"><button class="layui-btn">添加型号</button></a></td>
                 </tr>
                 {/foreach}
             </tbody>

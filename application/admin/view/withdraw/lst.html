@@ -1,0 +1,125 @@
+{include file="common/header" /}
+
+    <div class="layui-body">
+    <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb" lay-separator=">"><a>商品</a><a href="{:url('withdraw/lst')}">提现管理</a></span>
+            <div style="margin-top: 20px">
+            </div>
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>用户昵称</th>
+                <th>支付宝账户</th>
+                <th>订单金额</th>
+                <th>原因</th>
+                <th>订单状态</th>
+                <th>订单修改时间</th>
+                <th>订单创建时间</th>
+                <th>操作人</th>
+                <th>操作</th>
+            </tr> 
+            </thead>
+            <tbody>
+                {foreach name="withdraws" item="withdraw"}
+                <tr>
+                    <td>{$withdraw.id}</td>
+                    <td>{$withdraw.user.name}</td>
+                    <td>{$withdraw.zhifubao}</td>
+                    <td>{$withdraw.money}</td>
+                    <td>
+                    {if condition="$withdraw.status eq 2"}
+                    {$withdraw.reason}
+                    {else}
+                    非打回状态
+                    {/if}
+                    </td>
+                    <td>
+                    {if condition="$withdraw.status eq 0"}
+                    待处理
+                    {elseif condition="$withdraw.status eq 1"}
+                    已通过
+                    {elseif condition="$withdraw.status eq 2"}
+                    已打回
+                    {/if}
+                    </td>
+                    <td>{$withdraw.audit_time}</td>
+                    <td>{$withdraw.add_time}</td>
+                    <td>{$withdraw.admin.name}</td>
+                    <td>
+                        {if condition="$withdraw.status eq 0"}
+                        <input type="button" class="layui-btn layui-btn-radius layui-btn-warm" onclick="pass({$withdraw.id})" value="通过">
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="nopass({$withdraw.id})" value="打回">
+                        {/if}
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$withdraw.id})" value="删除"></td>
+                </tr>
+                {/foreach}
+            </tbody>
+        </table>
+        {$withdraws->render()}
+        </div>
+    </div>
+
+{include file="common/footer" /}
+ 
+<script type="text/javascript">
+        function del(id) {
+            layer.confirm('确定要删除吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('withdraw/del')}",
+                    data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('withdraw/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+
+        function pass(id) {
+            layer.confirm('确定要通过吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('withdraw/pass')}",
+                    data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('withdraw/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+
+        function nopass(id) {
+            layer.prompt({
+              formType: 2,
+              title: '请输入打回原因',
+              area: ['200px', '100px'] //自定义文本域宽高
+            }, function(value, index, elem){
+              $.ajax({
+                    type:"get",
+                    url:"{:url('withdraw/nopass')}",
+                    data:{id:id,information:value},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('withdraw/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>
+
