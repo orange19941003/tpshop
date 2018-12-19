@@ -7,6 +7,11 @@ use app\admin\model\Admin as adminUser;
 
 class Admin extends Base
 {
+	private $lst_code = "3-3-0";
+	private $add_code = "3-3-1";
+	private $edit_code = "3-3-2";
+	private $del_code = "3-3-3";
+
 	public function lst()
 	{
 		$o_admins = adminUser::where('status', 1)

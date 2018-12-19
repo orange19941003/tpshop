@@ -10,6 +10,9 @@ use app\admin\model\vip\Vip as appVip;
 
 class Vip extends Base
 {
+	private $lst_code = '1-3-0';
+	private $del_code = '1-3-1';
+	
 	public function lst()
 	{
 		$name = input('name', '');

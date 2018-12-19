@@ -181,3 +181,15 @@ CREATE TABLE `tp_collection` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `tp_permission`;
+CREATE TABLE `tp_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '权限名称',
+  `path` varchar(100) NOT NULL DEFAULT '' COMMENT '权限路径',
+  `code` varchar(16) NOT NULL COMMENT '权限code',
+  `description` varchar(200) NOT NULL DEFAULT '' COMMENT '权限描述',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '权限状态',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='权限表';

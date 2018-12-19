@@ -7,6 +7,8 @@ use app\admin\model\Income as appIncome;
 
 class Income extends Base
 {
+	private $lst_code = '2-4-0';
+	
 	public function lst()
 	{
 		$order_id = input('order_id', '-1');

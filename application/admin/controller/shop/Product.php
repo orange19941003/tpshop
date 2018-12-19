@@ -8,6 +8,11 @@ use app\admin\model\shop\Product as shopProduct;
 
 class Product extends Base
 {
+	private $lst_code = '2-1-0';
+	private $add_code = '2-1-1';
+	private $edit_code = '2-1-2';
+	private $del_code = '2-1-3';
+
 	public function lst()
 	{
 		$cate_id = input('cate_id', '');

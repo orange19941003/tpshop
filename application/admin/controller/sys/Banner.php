@@ -8,6 +8,11 @@ use app\admin\model\sys\Banner as adminBanner;
 
 class Banner extends Base
 {
+	private $lst_code = '3-1-0';
+	private $add_code = '3-1-1';
+	private $edit_code = '3-1-2';
+	private $del_code = '3-1-3';
+
 	public function lst()
 	{
 		$o_banners = adminBanner::where('status', 1)

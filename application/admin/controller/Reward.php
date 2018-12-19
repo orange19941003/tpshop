@@ -7,6 +7,10 @@ use app\admin\model\Reward as shopReward;
 
 class Reward extends Base
 {
+	private $lst_code = '1-5-0';
+	private $edit_code = '1-5-2';
+	private $add_code = '1-5-1';
+	
 	public function lst()
 	{
 		$o_rewards = shopReward::where('status', '1')

@@ -7,6 +7,21 @@
             <div style="margin-top: 20px">
                 <a href="{:url('shop.order/add')}"><button class="layui-btn">增加</button></a>
             </div>
+            <form class="layui-form" method="get" id="form2" style="margin-top: 20px">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户名称</label>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="name" placeholder="" autocomplete="off" class="layui-input" value="{$name}">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">支付订单号</label>
+                    <div class="layui-input-inline" style="width: 100px;">
+                        <input type="text" name="pay_num" placeholder="" autocomplete="off" class="layui-input" value="{$pay_num}">
+                    </div>
+                </div>
+                <button class="layui-btn" lay-submit lay-filter="formDemo">查找</button>
+            </form>
         <table class="layui-table">
             <thead>
             <tr>
@@ -16,6 +31,8 @@
                 <th>电话号码</th>
                 <th>收货人</th>
                 <th>订单金额</th>
+                <th>支付订单号</th>
+                <th>支付类型</th>
                 <th>收货地址</th>
                 <th>发货信息</th>
                 <th>是否发货</th>
@@ -33,6 +50,14 @@
                     <td>{$order.tel}</td>
                     <td>{$order.name}</td>
                     <td>{$order.money}</td>
+                    <td>{$order.pay_num}</td>
+                    <td>
+                        {if condition="$order.pay_type eq 1"}
+                        支付宝
+                        {elseif condition="$order.pay_typw eq 2"}
+                        微信
+                        {/if}
+                    </td>
                     <td>{$order.address}</td>
                     <td>
                         {if condition="$order.information eq ''"}
@@ -89,24 +114,6 @@
         }
 
         function fahuo(id) {
-            layer.prompt('确定要发货吗?', function(index) {
-                $.ajax({
-                    type:"get",
-                    url:"{:url('shop.order/fahuo')}",
-                    data:{id:id},
-                    success:function(res) {
-                        layer.msg(res.msg);
-                        if (res.code == 1) {
-                        setTimeout(function(){
-                            location.href = "{:url('shop.order/lst')}";
-                        },1500)
-                    }
-                    }
-                });
-            });
-        }
-
-        function fahuo(id) {
             layer.prompt({
               formType: 2,
               title: '请输入发货信息',
@@ -128,4 +135,3 @@
             });
         }
 </script>
-

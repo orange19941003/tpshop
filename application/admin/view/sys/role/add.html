@@ -1,0 +1,116 @@
+{include file="common/header" /}
+<link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div style="padding: 15px;">
+        <span class="layui-breadcrumb" lay-separator=">"><a>系统</a><a href="{:url('sys.role/lst')}">后台角色管理</a><a href="">新增</a></span>
+<form class="layui-form" method="post" id="form1" style="margin-top: 20px">
+  <div class="layui-form-item">
+    <label class="layui-form-label">角色名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="name" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">选择权限</label>
+    <div class="layui-input-block">
+        <ul>
+            <li>
+            <input type="checkbox" name="" title="全选" lay-skin="primary" value="" lay-filter="allChoose">
+            <li>
+            {foreach name="a_permissions" item="vo"}
+            <li style="float: left;width: 300px">
+            <input type="checkbox" name="permission" title="{$vo.name}" lay-skin="primary" value="{$vo.id}" lay-filter="permission">
+                <ul>
+                    {foreach name="b_permissions" item="list"}
+                    {if condition="$list.pid eq $vo.id"}
+                    <li style="margin-left: 50px">
+                        <input type="checkbox" name="permission" title="{$list.name}" lay-skin="primary" value="{$list.id}"  lay-filter="permission">
+                    <ul>
+                        {foreach name="c_permissions" item="lst"}
+                        {if condition="$lst.pid eq $list.id"}
+                        <li style="margin-left: 50px">
+                            <input type="checkbox" name="permission" title="{$lst.name}" lay-skin="primary" value="{$lst.id}" lay-filter="permission">
+                        </li>
+                        {/if}
+                        {/foreach}
+                    </ul>
+                    </li>
+                    {/if}
+                    {/foreach}
+                </ul>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input type="button" value="提交" onclick="add()" class="layui-btn edit">
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+    </div>
+</div>
+{include file="common/footer" /}
+
+<script src="__PUBLIC__/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use('form', function(){
+        var $ = layui.$;
+        var form = layui.form;
+        form.on('checkbox(allChoose)', function(data){
+            var child = $(data.elem).parents('ul').find('input[type="checkbox"]');
+            child.each(function(index, item){
+              item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+        form.on('checkbox(permission)', function(data){
+            var status = data.elem.checked; //是否被选中，true或者false
+            var val = data.value; //复选框value值，也可以通过data.elem.value得到
+            var child = $(this).siblings("ul").find('input[type="checkbox"]');
+            child.each(function(index, item){
+              item.checked = data.elem.checked;
+            });
+            xiongdi = $(this).parent().siblings("li").find('input[type="checkbox"]');
+            var type = 0;
+            xiongdi.each(function(index, item){
+                var status = item.checked;
+                if (status == true)
+                {
+                    type = 1;
+                }
+            });
+            if (type == 0) {
+                var baba = $(this).parent().parent().prev().prev();
+                console.log(baba);
+                baba.each(function(index, item){
+                    item.checked = data.elem.checked;
+                });
+            }
+            
+            form.render('checkbox');
+        }); 
+    }); 
+</script>
+<script type="text/javascript">  
+    function add() {
+        layer.confirm('确定要增加吗?', function(index) {
+            $.ajax({
+                type:"post",
+                url:"{:url('sys.role/add')}",
+                data: $('#form1').serialize(),
+                success:function(res) {
+                    layer.msg(res.msg);
+                    if (res.code == 1) {
+                    setTimeout(function(){
+                        location.href = "{:url('sys.role/lst')}";
+                    },1500)
+                }
+                }
+            });
+        });
+    }
+</script>

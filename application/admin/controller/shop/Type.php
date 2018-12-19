@@ -7,6 +7,11 @@ use app\admin\model\shop\ProType;
 
 class Type extends Base
 {
+	private $lst_code = '2-2-0';
+	private $add_code = '2-2-1';
+	private $edit_code = '2-2-2';
+	private $del_code = '2-2-3';
+
 	public function lst()
 	{
 		$pro_id = input('pro_id', '');

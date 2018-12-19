@@ -58,6 +58,7 @@
         //全选
         form.on('checkbox(allChoose)', function(data){
             var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+            console.log(child);
             child.each(function(index, item){
               item.checked = data.elem.checked;
             });

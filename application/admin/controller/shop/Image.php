@@ -8,6 +8,11 @@ use app\admin\model\shop\Image as Img;
 
 class Image extends Base
 {
+	private $lst_code = '2-6-0';
+	private $add_code = '2-6-1';
+	private $edit_code = '2-6-2';
+	private $del_code = '2-6-3';
+
 	public function lst()
 	{
 		$pro_id = input('pro_id', '');

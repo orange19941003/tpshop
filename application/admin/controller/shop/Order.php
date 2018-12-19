@@ -11,13 +11,33 @@ use app\admin\model\shop\Order as shopOrder;
 
 class Order extends Base
 {
+	private $lst_code = '2-5-0';
+	private $add_code = '2-5-1';
+	private $edit_code = '2-5-2';
+	private $del_code = '2-5-3';
+	private $fahuo_code = '2-5-4';
+
 	public function lst() 
 	{
+		$name = input('name', '');
+		$pay_num = input('pay_num', '');
+		$s_pay_num_eq = $pay_num == '' ? 'neq' : 'eq';
+		$user_id = '-1';
+		$s_user_id_eq = 'neq';
+		if (!empty($name)) {
+			$user_id = User::where('name', $name)
+				->value('id');
+			$s_user_id_eq = 'eq';
+		}
 		$o_orders = shopOrder::where('is_del', '1')
+			->where('pay_num', $s_pay_num_eq, $pay_num)
+			->where('user_id', $s_user_id_eq, $user_id)
 			->order('time', 'desc')
 			->paginate(10, false, [
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);
+        $this->assign('name', $name);
+        $this->assign('pay_num', $pay_num);
 		$this->assign('orders', $o_orders);
 
 		return $this->fetch('lst');
@@ -150,5 +170,4 @@ class Order extends Base
 
 		return $this->yes("发货成功");	
 	}
-
 }

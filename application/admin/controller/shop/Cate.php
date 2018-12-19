@@ -7,6 +7,11 @@ use app\admin\model\shop\ShopCate as shopCate;
 
 class Cate extends Base
 {
+	private $lst_code = '2-3-0';
+	private $add_code = '2-3-1';
+	private $edit_code = '2-3-2';
+	private $del_code = '2-3-3';
+
 	public function lst() 
 	{
 		$o_cates = shopCate::where('status', '1')

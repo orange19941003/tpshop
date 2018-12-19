@@ -8,6 +8,10 @@ use app\admin\model\vip\VipCate;
 
 class Cate extends Base
 {
+	private $lst_code = '1-2-0';
+	private $add_code = '1-2-1';
+	private $edit_code = '1-2-2';
+	
 	public function lst()
 	{
 		$o_cates = VipCate::all();
@@ -46,6 +50,7 @@ class Cate extends Base
 			$cate->price = $price;
 			$cate->addition = $addition;
 			$cate->day = $day;
+			$cate->add_time = date("Y-m-d H:i:s");
 			$cate->uid = $this->admin_id;
 			$res = $cate->save();
 			if (!$res) {

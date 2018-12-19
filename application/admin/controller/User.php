@@ -10,6 +10,12 @@ use app\admin\model\User as appUser;
 
 class User extends Base
 {
+	private $lst_code = "1-1-0";
+	private $add_code = "1-1-1";
+	private $edit_code = "1-1-2";
+	private $del_code = "1-1-3";
+	private $vip_code = "1-1-4";
+	private $chongzhi_code = "1-1-5";
 
 	public function lst()
 	{	
@@ -90,6 +96,8 @@ class User extends Base
 
 	public function del()
 	{
+		$code = "1-1-2";
+
 		$id = input('id');
 		$user = new appUser;
 		$o_user = $user->where('id', $id)
@@ -109,7 +117,7 @@ class User extends Base
 
 	public function edit()
 	{
-		
+		$code = "1-1-3";
 		$id = input('id');
 		if (Request::instance()->isAjax()) {
 			$name = input('name', '');
@@ -166,6 +174,8 @@ class User extends Base
 
 	public function chongzhi()
 	{
+		$code = "1-1-5";
+
 		$id = input('id');
 		$money = input('money');
 		$o_user = appUser::where('id', $id)
@@ -186,6 +196,8 @@ class User extends Base
 
 	public function vip()
 	{
+		$code = "1-1-4";
+
 		// 启动事务
         Db::startTrans();
         try{ 

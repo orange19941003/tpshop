@@ -18,6 +18,8 @@
                 <tr>
                     <th>ID</th>
                     <th>用户昵称</th>
+                    <th>手机号码</th>
+                    <th>收货人</th>
                     <th>收货地址</th>
                 </tr> 
                 </thead>
@@ -26,6 +28,8 @@
                 <tr>
                     <td>{$address.id}</td>
                     <td>{$address.user.name}</td>
+                    <td>{$address.tel}</td>
+                    <td>{$address.name}</td>
                     <td>{$address.address}</td>
                 </tr>
                 {/foreach}

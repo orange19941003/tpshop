@@ -1,0 +1,164 @@
+{include file="common/header" /}
+<link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
+<div class="layui-body">
+  <!-- 内容主体区域 -->
+  <div style="padding: 15px;">
+  <span class="layui-breadcrumb" lay-separator=">"><a>杂项</a><a href="{:url('sys.permission/lst')}">权限管理</a><a href="">新增</a></span>
+  <form class="layui-form" method="post" id="form1" style="margin-top: 20px">
+    <div class="layui-form-item">
+    <label class="layui-form-label">节点等级</label>
+        <div class="layui-input-block">
+            <select name="level" lay-verify="required" id="data">
+                <option value="0">请选择</option>
+                <option value="1" {if condition="$permission.level eq 1"}selected="selected"{/if}>顶级节点</option>
+                <option value="2" {if condition="$permission.level eq 2"}selected="selected"{/if}>次级节点</option>
+                <option value="3" {if condition="$permission.level eq 3"}selected="selected"{/if}>功能节点</option>
+            </select>
+        </div>
+    </div>
+    <div {if condition="$permission.level neq 1"}style="display:none"{/if} id="div_1">
+        <div class="layui-form-item">
+        <label class="layui-form-label">节点名称</label>
+            <div class="layui-input-block">
+            <input type="text" name="name_a" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$permission.name}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">节点code</label>
+            <div class="layui-input-block">
+            <input type="text" name="code_a" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$permission.code}">
+            </div>
+        </div>
+    </div>
+    <div {if condition="$permission.level neq 2"}style="display:none"{/if} id="div_2">
+        <div class="layui-form-item">
+            <label class="layui-form-label">父节点</label>
+            <div class="layui-input-block">
+            <select name="pid_b" lay-verify="required">
+                {foreach name="p_permissions" item="vo"}
+                <option value="{$vo.id}" {if condition="$permission.pid eq $vo.id"}selected="selected"{/if}>{$vo.name}</option>
+                {/foreach}
+            </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">节点名称</label>
+            <div class="layui-input-block">
+            <input type="text" name="name_b" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$permission.name}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">节点路径</label>
+            <div class="layui-input-block">
+            <input type="text" name="path_b" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$permission.path}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">节点code</label>
+            <div class="layui-input-block">
+            <input type="text" name="code_b" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$permission.code}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">权限描述</label>
+            <div class="layui-input-block">
+            <input type="text" name="description_b" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$permission.description}">
+            </div>
+        </div>
+    </div>
+    <div {if condition="$permission.level neq 3"}style="display:none"{/if} id="div_3">
+        <div class="layui-form-item">
+            <label class="layui-form-label">父节点</label>
+            <div class="layui-input-block">
+            <select name="pid_c" lay-verify="required">
+                <option value="0">请选择</option>
+                {foreach name="permissions" item="vo"}
+                <option value="{$vo.id}" {if condition="$vo.level eq 1"}disabled{/if} {if condition="$permission.pid eq $vo.id"}selected="selected"{/if}>
+                {if condition="$vo.level eq 2"}&nbsp&nbsp{/if}|--{$vo.name}</option>
+                {/foreach}
+            </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">节点名称</label>
+            <div class="layui-input-block">
+            <input type="text" name="name_c" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$permission.name}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">节点路径</label>
+            <div class="layui-input-block">
+            <input type="text" name="path_c" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$permission.path}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">节点code</label>
+            <div class="layui-input-block">
+            <input type="text" name="code_c" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$permission.code}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">权限描述</label>
+            <div class="layui-input-block">
+            <input type="text" name="description_c" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input" value="{$permission.description}">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input type="hidden" name="id" value="{$permission.id}">
+            <input type="button" value="提交" onclick="add()" class="layui-btn edit">
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+  </form>
+
+  </div>
+</div>
+{include file="common/footer" /}
+
+<script src="__PUBLIC__/layui/layui.js"></script>
+
+<script type="text/javascript">
+        function add() {
+            layer.confirm('确定要修改吗?', function(index) {
+                $.ajax({
+                    type:"post",
+                    url:"{:url('sys.permission/edit')}",
+                    data: $('#form1').serialize(),
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('sys.permission/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>
+
+<script language="javascript" type="text/javascript">
+    $('.layui-anim-upbit dd').on("click",function(){
+            var val=$(this).attr("lay-value");//这就是selected的值
+            if (val == 1) {
+                $('#div_1').show();
+                $('#div_2').hide();
+                $('#div_3').hide();
+            }
+            if (val == 2) {
+                $('#div_1').hide();
+                $('#div_3').hide();
+                $('#div_2').show();
+            }
+            if (val == 3) {
+                $('#div_1').hide();
+                $('#div_2').hide();
+                $('#div_3').show();
+            }
+    })
+    $(document).ready(function(){
+        
+    })
+</script>

@@ -1,0 +1,71 @@
+{include file="common/header" /}
+<style type="text/css">
+    img {
+        height: 50px;
+        width: 100px;
+    }
+</style>
+    <div class="layui-body">
+    <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <span class="layui-breadcrumb" lay-separator=">"><a>杂项</a><a href="{:url('permission/lst')}">权限管理</a></span>
+            <div style="margin-top: 20px">
+            <a href="{:url('sys.permission/add')}"><button class="layui-btn">增加</button></a>
+            </div>
+        <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>权限名称</th>
+                    <th>权限路径</th>
+                    <th>CODE</th>
+                    <th>父级</th>
+                    <th>权限描述</th>
+                    <th>权限等级</th>
+                    <th>创建时间</th>
+                    <th>操作人</th>
+                    <th>操作</th>
+                </tr> 
+                </thead>
+                <tbody>
+                    {foreach name="permissions" item="vo"}
+                    <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.path}</td>
+                    <td>{$vo.code}</td>
+                    <td>{$vo.permission.name}</td>
+                    <td>{$vo.description}</td>
+                    <td>{$vo.level}</td>
+                    <td>{$vo.add_time}</td>
+                    <td>{$vo.admin.name}</td>
+                    <td><a href="{:url('sys.permission/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$vo.id})" value="删除"></td>
+                    </tr>
+                    {/foreach}
+            </tbody>
+        </table>
+        {$permissions->render()}
+        </div>
+    </div>
+
+{include file="common/footer" /}
+ 
+<script type="text/javascript">
+        function del(id) {
+            layer.confirm('确定要删除吗?', function(index) {
+                $.ajax({
+                    type:"get",
+                    url:"{:url('sys.permission/del')}",
+                    data:{id:id},
+                    success:function(res) {
+                        layer.msg(res.msg);
+                        if (res.code == 1) {
+                        setTimeout(function(){
+                            location.href = "{:url('sys.permission/lst')}";
+                        },1500)
+                    }
+                    }
+                });
+            });
+        }
+</script>

@@ -34,34 +34,20 @@
     <div class="layui-side-scroll">
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
       <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+        {foreach name="one_permissions" item="vo"}
         <li class="layui-nav-item layui-nav-itemed">
-          <a class="" href="javascript:;">用户</a>
+          {if condition="$vo.level eq 1"}
+          <a class="" href="javascript:;">{$vo.name}</a>
+          {/if}
           <dl class="layui-nav-child">
-            <dd><a href="{:url('user/lst')}">用户管理</a></dd>
-            <dd><a href="{:url('vip.cate/lst')}">vip分类管理</a></dd>
-            <dd><a href="{:url('vip.vip/lst')}">vip管理</a></dd>
-            <dd><a href="{:url('reward/lst')}">分销提成管理</a></dd>
-             <dd><a href="{:url('withdraw/lst')}">提现管理</a></dd>
+            {foreach name="two_permissions" item="list"}
+            {if condition="$list.pid eq $vo.id"}
+            <dd><a href="{:url($list.path)}">{$list.name}</a></dd>
+            {/if}
+            {/foreach}
           </dl>
-        </li>
-        <li class="layui-nav-item layui-nav-itemed">
-          <a href="javascript:;">商品</a>
-          <dl class="layui-nav-child">
-            <dd><a href="{:url('shop.product/lst')}">商品管理</a></dd>
-            <dd><a href="{:url('shop.type/lst')}">商品型号管理</a></dd>
-            <dd><a href="{:url('shop.cate/lst')}">分类管理</a></dd>
-            <dd><a href="{:url('income/lst')}">佣金管理</a></dd>
-            <dd><a href="{:url('shop.order/lst')}">订单管理</a></dd>
-            <dd><a href="{:url('shop.image/lst')}">图片管理</a></dd>
-            <dd><a href="{:url('shop.address/lst')}">收货地址管理</a></dd>
-          </dl>
-        </li>
-        <li class="layui-nav-item layui-nav-itemed">
-          <a href="javascript:;">系统</a>
-          <dl class="layui-nav-child">
-            <dd><a href="{:url('sys.banner/lst')}">banner图管理</a></dd>
-          </dl>
-        </li>
+        </li> 
+        {/foreach}
       </ul>
     </div>
   </div>

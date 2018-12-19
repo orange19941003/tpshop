@@ -8,9 +8,16 @@ use app\admin\model\Withdraw as appWithdraw;
 
 class Withdraw extends Base
 {
+	private $lst_code = '1-6-0';
+	private $pass_code = '1-6-1';
+	private $nopass_code = '1-6-2';
+	private $del_code = '1-6-3';
+
 	public function lst()
 	{
 		$name = input('name', '');
+		$status = input('status', '-1');
+		$s_status_eq = $status == '-1' ? 'neq' : 'eq';
 		if (empty($name)) {
 			$user_id = '-1';
 		    $s_user_id_eq = 'neq';
@@ -27,11 +34,14 @@ class Withdraw extends Base
 			}
 		}
 		$o_withdraws = appWithdraw::where('user_id', $s_user_id_eq, $user_id)
+			->where('status', $s_status_eq, $status)
 			->where('status', 'neq', '3')
 			->order('add_time', 'desc')
 			->paginate(10, false, [
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);
+        $this->assign('name', $name);
+        $this->assign('status', $status);
         $this->assign('withdraws', $o_withdraws);
 
         return $this->fetch('lst');

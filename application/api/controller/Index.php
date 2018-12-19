@@ -374,7 +374,6 @@ class Index
 	{
 		$data = [];
 		$user_id =  input('user_id');
-		$user_id = 1;
 		$token = input('token', '');
 		if (empty($token)) {
 			$data['code'] = 201;

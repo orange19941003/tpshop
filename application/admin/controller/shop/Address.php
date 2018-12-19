@@ -8,6 +8,7 @@ use app\admin\model\shop\Address as shopAddress;
 
 class Address extends Base
 {
+	private $lst_code = '2-7-0';
 	public function lst()
 	{
 		$user_name = input('user_name', '');
