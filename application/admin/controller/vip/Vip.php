@@ -15,6 +15,15 @@ class Vip extends Base
 	
 	public function lst()
 	{
+		$lst_code = $this->lst_code;
+		$lst_code_status = $this->checkCode($lst_code);
+		if ($lst_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		$data = [];
+		$data['del_code_status'] = $del_code_status;
 		$name = input('name', '');
 		$id = User::where('name', $name)
 			->where('status', '1')
@@ -33,17 +42,21 @@ class Vip extends Base
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);
         $o_cates = VipCate::all();
-    	$arr = array();
-    	$arr['name'] = $name;
-    	$arr['cate_id'] = $cate_id;
-    	$arr['cates'] = $o_cates;
-    	$arr['vips'] = $o_vips;
+    	$data['name'] = $name;
+    	$data['cate_id'] = $cate_id;
+    	$data['cates'] = $o_cates;
+    	$data['vips'] = $o_vips;
 
-		return $this->fetch('lst', $arr);
+		return $this->fetch('lst', $data);
 	}
 
 	public function del()
 	{
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		if ($del_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		$o_vip = appVip::where('id', $id)
 			->where('status', '1')

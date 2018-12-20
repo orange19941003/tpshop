@@ -10,7 +10,9 @@
         <div style="padding: 15px;">
             <span class="layui-breadcrumb" lay-separator=">"><a>用户</a><a href="{:url('vip.cate/lst')}">会员分类管理</a></span>
             <div style="margin-top: 20px">
+            {if condition="$add_code_status eq 1"}
             <a href="{:url('vip.cate/add')}"><button class="layui-btn">增加</button></a>
+            {/if}
             </div>
         <table class="layui-table">
                 <thead>
@@ -37,7 +39,11 @@
                     </td>
                     <td>{$vo.day}(天)</td>
                     <td>{$vo.admin.name}</td>
-                    <td><a href="{:url('vip.cate/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a></td>
+                    <td>
+                        {if condition="$edit_code_status"}
+                        <a href="{:url('vip.cate/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a>
+                        {/if}
+                    </td>
                     </tr>
                     {/foreach}
             </tbody>

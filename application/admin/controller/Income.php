@@ -11,6 +11,11 @@ class Income extends Base
 	
 	public function lst()
 	{
+		$lst_code = $this->lst_code;
+		$lst_code_status = $this->checkCode($lst_code);
+		if ($lst_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$order_id = input('order_id', '-1');
 		$s_order_id_eq = $order_id == '-1' ? 'neq' : 'eq';
 		$o_incomes = appIncome::where('order_id', $s_order_id_eq, $order_id)

@@ -16,17 +16,37 @@ class Permission extends Base
 
 	public function lst()
 	{
+		$lst_code = $this->lst_code;
+		$lst_code_status = $this->checkCode($lst_code);
+		if ($lst_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
+		$edit_code = $this->edit_code;
+		$edit_code_status = $this->checkCode($edit_code);
+		$add_code = $this->add_code;
+		$add_code_status = $this->checkCode($add_code);
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		$data = [];
+		$data['edit_code_status'] = $edit_code_status;
+		$data['add_code_status'] = $add_code_status;
+		$data['del_code_status'] = $del_code_status;
 		$o_permissions = adminPermission::where('status', '1')
 			->paginate(10, false, [
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);
         $this->assign('permissions', $o_permissions);
 
-		return $this->fetch('lst');
+		return $this->fetch('lst', $data);
 	}
 
 	public function add()
 	{
+		$add_code = $this->add_code;
+		$add_code_status = $this->checkCode($add_code);
+		if ($add_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		if (Request::instance()->isGet()) {
 			$p_permissions = adminPermission::where('level', '1')
 				->where('status', '1')
@@ -136,6 +156,11 @@ class Permission extends Base
 
 	public function edit()
 	{
+		$edit_code = $this->edit_code;
+		$edit_code_status = $this->checkCode($edit_code);
+		if ($edit_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		if (Request::instance()->isGet()) {
 			$id = input('id');
 			$o_permission = adminPermission::where('id', $id)
@@ -254,6 +279,11 @@ class Permission extends Base
 
 	public function del()
 	{
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		if ($del_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		$o_permission = adminPermission::where('id', $id)
 			->find();

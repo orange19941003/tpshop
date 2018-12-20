@@ -10,7 +10,9 @@
         <div style="padding: 15px;">
             <span class="layui-breadcrumb" lay-separator=">"><a>杂项</a><a href="{:url('permission/lst')}">权限管理</a></span>
             <div style="margin-top: 20px">
+            {if condition="$add_code_status eq 1"}
             <a href="{:url('sys.permission/add')}"><button class="layui-btn">增加</button></a>
+            {/if}
             </div>
         <table class="layui-table">
                 <thead>
@@ -39,7 +41,14 @@
                     <td>{$vo.level}</td>
                     <td>{$vo.add_time}</td>
                     <td>{$vo.admin.name}</td>
-                    <td><a href="{:url('sys.permission/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$vo.id})" value="删除"></td>
+                    <td>
+                        {if condition="$edit_code_status eq 1"}
+                        <a href="{:url('sys.permission/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a>
+                        {/if}
+                        {if condition="$del_code_status eq 1"}
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$vo.id})" value="删除">
+                        {/if}
+                    </td>
                     </tr>
                     {/foreach}
             </tbody>

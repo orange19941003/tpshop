@@ -15,6 +15,21 @@ class Withdraw extends Base
 
 	public function lst()
 	{
+		$lst_code = $this->lst_code;
+		$lst_code_status = $this->checkCode($lst_code);
+		if ($lst_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
+		$pass_code = $this->pass_code;
+		$pass_code_status = $this->checkCode($pass_code);
+		$nopass_code = $this->nopass_code;
+		$nopass_code_status = $this->checkCode($nopass_code);
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		$data = [];
+		$data['pass_code_status'] = $pass_code_status;
+		$data['nopass_code_status'] = $nopass_code_status;
+		$data['del_code_status'] = $del_code_status;
 		$name = input('name', '');
 		$status = input('status', '-1');
 		$s_status_eq = $status == '-1' ? 'neq' : 'eq';
@@ -44,11 +59,16 @@ class Withdraw extends Base
         $this->assign('status', $status);
         $this->assign('withdraws', $o_withdraws);
 
-        return $this->fetch('lst');
+        return $this->fetch('lst', $data);
 	}
 
 	public function pass()
 	{
+		$pass_code = $this->pass_code;
+		$pass_code_status = $this->checkCode($pass_code);
+		if ($pass_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		$o_withdraw = appWithdraw::where('id', $id)
 			->find();
@@ -65,6 +85,11 @@ class Withdraw extends Base
 
 	public function nopass()
 	{
+		$nopass_code = $this->nopass_code;
+		$nopass_code_status = $this->checkCode($nopass_code);
+		if ($nopass_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		$information = input('information', '');
 		if (empty($information)) {
@@ -91,6 +116,11 @@ class Withdraw extends Base
 
 	public function del()
 	{
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		if ($pass_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		$o_withdraw = appWithdraw::where('id', $id)
 			->find();

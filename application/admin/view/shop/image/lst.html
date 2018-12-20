@@ -39,7 +39,13 @@
                     </td>
                     <td>{$image.add_time}</td>
                     <td>{$image.admin.name}</td>
-                    <td><a href="{:url('shop.image/edit', ['id'=>$image.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$image.id})" value="删除"></td>
+                    <td>
+                        {if condition="$edit_code_status eq '1'"}
+                        <a href="{:url('shop.image/edit', ['id'=>$image.id])}"><button class="layui-btn">编辑</button></a>
+                        {/if}
+                        {if condition="$del_code_status eq '1'"}
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$image.id})" value="删除"></td>
+                        {/if}
                 </tr>
                 {/foreach}
             </tbody>

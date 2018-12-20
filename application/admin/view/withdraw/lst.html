@@ -69,10 +69,17 @@
                     <td>{$withdraw.admin.name}</td>
                     <td>
                         {if condition="$withdraw.status eq 0"}
+                        {if condition="$pass_code_status eq 1"}
                         <input type="button" class="layui-btn layui-btn-radius layui-btn-warm" onclick="pass({$withdraw.id})" value="通过">
+                        {/if}
+                        {if condition="$nopass_code_status eq 1"}
                         <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="nopass({$withdraw.id})" value="打回">
                         {/if}
-                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$withdraw.id})" value="删除"></td>
+                        {/if}
+                        {if condition="$del_code_status eq 1"}
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$withdraw.id})" value="删除">
+                        {/if}
+                    </td>
                 </tr>
                 {/foreach}
             </tbody>

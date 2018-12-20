@@ -19,6 +19,27 @@ class User extends Base
 
 	public function lst()
 	{	
+		$lst_code = $this->lst_code;
+		$lst_code_status = $this->checkCode($lst_code);
+		if ($lst_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
+		$edit_code = $this->edit_code;
+		$edit_code_status = $this->checkCode($edit_code);
+		$add_code = $this->add_code;
+		$add_code_status = $this->checkCode($add_code);
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		$vip_code = $this->vip_code;
+		$vip_code_status = $this->checkCode($vip_code);
+		$chongzhi_code = $this->del_code;
+		$chongzhi_code_status = $this->checkCode($chongzhi_code);
+		$data = [];
+		$data['edit_code_status'] = $edit_code_status;
+		$data['add_code_status'] = $add_code_status;
+		$data['del_code_status'] = $del_code_status;
+		$data['vip_code_status'] = $vip_code_status;
+		$data['chongzhi_code_status'] = $chongzhi_code_status;
 		$name = input('name', '');
 		$s_name_eq = $name == '' ? 'neq' : 'eq';
 		$vip = input('vip', '-1');
@@ -32,17 +53,21 @@ class User extends Base
                 'query' => Request::instance()->param(),//不丢失已存在的url参数
             ]);
         $o_cates = VipCate::all();
-		$a_arr = array();
-		$a_arr['name'] = $name;
-		$a_arr['vip'] = $vip;
-		$a_arr['users'] = $o_users;
-		$a_arr['cates'] = $o_cates;
+		$data['name'] = $name;
+		$data['vip'] = $vip;
+		$data['users'] = $o_users;
+		$data['cates'] = $o_cates;
 
-		return $this->fetch("lst", $a_arr);
+		return $this->fetch("lst", $data);
 	}
 
 	public function add()
 	{
+		$add_code = $this->add_code;
+		$add_code_status = $this->checkCode($add_code);
+		if ($add_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		if (Request::instance()->isAjax()) {
 			$name = input('name', '');
 			$tel = input('tel', '');
@@ -96,8 +121,11 @@ class User extends Base
 
 	public function del()
 	{
-		$code = "1-1-2";
-
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		if ($del_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		$user = new appUser;
 		$o_user = $user->where('id', $id)
@@ -117,7 +145,11 @@ class User extends Base
 
 	public function edit()
 	{
-		$code = "1-1-3";
+		$edit_code = $this->edit_code;
+		$edit_code_status = $this->checkCode($edit_code);
+		if ($edit_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		if (Request::instance()->isAjax()) {
 			$name = input('name', '');
@@ -174,8 +206,11 @@ class User extends Base
 
 	public function chongzhi()
 	{
-		$code = "1-1-5";
-
+		$chongzhi_code = $this->chongzhi_code;
+		$chongzhi_code_status = $this->checkCode($chongzhi_code);
+		if ($chongzhi_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		$money = input('money');
 		$o_user = appUser::where('id', $id)
@@ -196,8 +231,11 @@ class User extends Base
 
 	public function vip()
 	{
-		$code = "1-1-4";
-
+		$vip_code = $this->vip_code;
+		$vip_code_status = $this->checkCode($vip_code);
+		if ($chongzhi_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		// 启动事务
         Db::startTrans();
         try{ 

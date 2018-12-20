@@ -6,7 +6,9 @@
             <span class="layui-breadcrumb" lay-separator=">"><a>商品</a><a href="{:url('reward/lst')}">提成管理</a></span>
             {if condition="count($rewards) eq '0'"}
             <div style="margin-top: 20px">
+                {if condition="$add_code_status eq 1"}
                 <a href="{:url('reward/add')}"><button class="layui-btn">增加</button></a>
+                {/if}
             </div>
             {/if}
         <table class="layui-table" style="margin-top: 50px">
@@ -30,7 +32,11 @@
                     <td>{$reward.addition_three}(%)</td>
                     <td>{$reward.add_time}</td>
                     <td>{$reward.admin.name}</td>
-                    <td><a href="{:url('reward/edit', ['id'=>$reward.id])}"><button class="layui-btn">编辑</button></a></td>
+                    <td>
+                        {if condition="$edit_code_status eq 1"}
+                        <a href="{:url('reward/edit', ['id'=>$reward.id])}"><button class="layui-btn">编辑</button></a>
+                        {/if}
+                    </td>
                 </tr>
                 {/foreach}
             </tbody>

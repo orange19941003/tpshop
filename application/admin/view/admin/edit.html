@@ -1,54 +1,73 @@
 {include file="common/header" /}
 <link rel="stylesheet" href="__PUBLIC__/layui/css/layui.css" media="all">
 <div class="layui-body">
-    <!-- 内容主体区域 -->
-    <div style="padding: 15px;">
-        <span class="layui-breadcrumb" lay-separator=">"><a>后台用户</a><a href="{:url('admin/lst')}">后台用户管理</a><a href="">编辑</a></span>
+		<!-- 内容主体区域 -->
+		<div style="padding: 15px;">
+				<span class="layui-breadcrumb" lay-separator=">"><a>后台用户</a><a href="{:url('admin/lst')}">后台用户管理</a><a href="">编辑</a></span>
 <form class="layui-form" method="post" id="form1" style="margin-top: 20px">
-  <div class="layui-form-item">
-    <label class="layui-form-label">用户名称</label>
-    <div class="layui-input-block">
-      <input type="text" name="name" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" value="{$admin.name}">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">密码</label>
-    <div class="layui-input-block">
-      <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
-    </div>
-  </div>
-
-  <div class="layui-form-item">
-    <div class="layui-input-block">
-      <input type="hidden" name="id" value="{$admin.id}">
-      <input type="button" value="提交" onclick="edit()" class="layui-btn edit">
-      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-    </div>
-  </div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">用户名称</label>
+		<div class="layui-input-block">
+			<input type="text" name="name" required  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" value="{$admin.name}">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">密码</label>
+		<div class="layui-input-block">
+			<input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">角色</label>
+		<div class="layui-input-block">
+				{foreach name="roles" item="role"}
+				<input type="checkbox" name="role" title="{$role.name}" lay-skin="primary" value="{$role.id}" {in name="$role.id" value="$a_role"}checked{/in}>
+				{/foreach}
+		</div>
+		</div>
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<input type="hidden" name="id" value="{$admin.id}">
+			<input type="button" value="提交" onclick="edit()" class="layui-btn edit">
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
 </form>
  
-    </div>
+		</div>
 </div>
 {include file="common/footer" /}
 
 <script src="__PUBLIC__/layui/layui.js"></script>
 
 <script type="text/javascript">
-        function edit() {
-            layer.confirm('确定要修改吗?', function(index) {
-                $.ajax({
-                    type:"post",
-                    url:"{:url('admin/edit')}",
-                    data: $('#form1').serialize(),
-                    success:function(res) {
-                        layer.msg(res.msg);
-                        if (res.code == 1) {
-                        setTimeout(function(){
-                            location.href = "{:url('admin/lst')}";
-                        },1500)
-                    }
-                    }
-                });
-            });
+	function edit() {
+		var check_arr = [];
+        $('input[name=role]:checked').each(function(){
+            check_arr.push($(this).val());
+        });
+        if (check_arr.length == '0') {
+            layer.msg('请选择用户角色');
+            return;
         }
+		layer.confirm('确定要修改吗?', function(index) {
+			var list = JSON.stringify(check_arr);
+            var name = $("input[name='name']").val();
+            var password = $("input[name='password']").val();
+            var id = $("input[name='id']").val();
+			$.ajax({
+				type:"post",
+				url:"{:url('admin/edit')}",
+				data: {role:list,name:name,password:password,id:id},
+				success:function(res) {
+					layer.msg(res.msg);
+					if (res.code == 1) {
+					setTimeout(function(){
+						location.href = "{:url('admin/lst')}";
+					},1500)
+				}
+				}
+			});
+		});
+	}
 </script>

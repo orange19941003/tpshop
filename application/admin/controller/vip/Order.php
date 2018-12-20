@@ -15,6 +15,15 @@ class Order extends Base
 	
 	public function lst()
 	{
+		$lst_code = $this->lst_code;
+		$lst_code_status = $this->checkCode($lst_code);
+		if ($lst_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		$data = [];
+		$data['del_code_status'] = $del_code_status;
 		$s_a_date = input('a_date', '');
 		$s_b_date = input('b_date', '');
 		$s_date_eq = 'between';
@@ -53,7 +62,6 @@ class Order extends Base
 			->sum('money');
         $o_cates = VipCate::where('status', '1')
         	->select();
-        $data = [];
         $data['money_sum'] = $money_sum;
         $data['cate_id'] = $cate_id;
         $data['name'] = $name;
@@ -67,6 +75,11 @@ class Order extends Base
 
 	public function del()
 	{
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		if ($del_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		$o_order = VipOrder::where('status', '1')
 			->where('id', $id)

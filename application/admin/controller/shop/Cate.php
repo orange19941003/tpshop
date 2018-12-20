@@ -14,17 +14,37 @@ class Cate extends Base
 
 	public function lst() 
 	{
+		$lst_code = $this->lst_code;
+		$lst_code_status = $this->checkCode($lst_code);
+		if ($lst_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
+		$edit_code = $this->edit_code;
+		$edit_code_status = $this->checkCode($edit_code);
+		$add_code = $this->add_code;
+		$add_code_status = $this->checkCode($add_code);
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		$data = [];
+		$data['edit_code_status'] = $edit_code_status;
+		$data['add_code_status'] = $add_code_status;
+		$data['del_code_status'] = $del_code_status;
 		$o_cates = shopCate::where('status', '1')
 			->where('status', '1')
 			->paginate(10);
 		$this->assign('cates', $o_cates);
 
-		return $this->fetch('lst');
+		return $this->fetch('lst', $data);
 	}
 
 	public function add()
 	{
 		header("Content-type:text/html;charset=utf-8");
+		$add_code = $this->add_code;
+		$add_code_status = $this->checkCode($add_code);
+		if ($add_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$cate = new shopCate;
 		if (Request::instance()->isGet()) {
 			$titles = $cate->where('status', '1')
@@ -64,6 +84,11 @@ class Cate extends Base
 
 	public function edit()
 	{
+		$edit_code = $this->edit_code;
+		$edit_code_status = $this->checkCode($edit_code);
+		if ($edit_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$cate = new shopCate;
 		$id = input('id');
 		if (Request::instance()->isGet()) {
@@ -111,6 +136,11 @@ class Cate extends Base
 
 	public function del()
 	{
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		if ($del_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		$o_cate = shopCate::where('id', $id)
 			->where('status', '1')

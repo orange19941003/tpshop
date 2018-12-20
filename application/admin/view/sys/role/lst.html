@@ -5,13 +5,17 @@
         <div style="padding: 15px;">
             <span class="layui-breadcrumb" lay-separator=">"><a>系统</a><a href="{:url('sys.role/lst')}">后台角色管理</a></span>
             <div style="margin-top: 20px">
+            {if condition="$add_code_status eq 1"}
             <a href="{:url('sys.role/add')}"><button class="layui-btn">增加</button></a>
+            {/if}
             </div>
         <table class="layui-table">
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>角色</th>
+                    <th>添加时间</th>
+                    <th>后台操作人</th>
                     <th>操作</th>
                 </tr> 
                 </thead>
@@ -20,7 +24,16 @@
                 <tr>
                     <td>{$role.id}</td>
                     <td>{$role.name}</td>
-                    <td><a href="{:url('sys.role/edit', ['id'=>$role.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$role.id})" value="删除"></td>
+                    <td>{$role.add_time}</td>
+                    <td>{$role.admin.name}</td>
+                    <td>
+                        {if condition="$edit_code_status eq 1"}
+                        <a href="{:url('sys.role/edit', ['id'=>$role.id])}"><button class="layui-btn">编辑</button></a>
+                        {/if}
+                        {if condition="$del_code_status eq 1"}
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$role.id})" value="删除">
+                        {/if}
+                    </td>
                 </tr>
                 {/foreach}
             </tbody>

@@ -15,6 +15,18 @@ class Image extends Base
 
 	public function lst()
 	{
+		$lst_code = $this->lst_code;
+		$lst_code_status = $this->checkCode($lst_code);
+		if ($lst_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
+		$edit_code = $this->edit_code;
+		$edit_code_status = $this->checkCode($edit_code);
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		$data = [];
+		$data['edit_code_status'] = $edit_code_status;
+		$data['del_code_status'] = $del_code_status;
 		$pro_id = input('pro_id', '');
 		$s_pro_id_eq = $pro_id == '' ? 'neq' : 'eq';
 		$o_images = Img::where('pro_id', $s_pro_id_eq, $pro_id)
@@ -26,7 +38,7 @@ class Image extends Base
         $this->assign('images', $o_images);
         $this->assign('pro_id', $pro_id);
 
-		return $this->fetch('lst');
+		return $this->fetch('lst', $data);
 	}
 
 	public function add()

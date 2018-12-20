@@ -5,7 +5,9 @@
         <div style="padding: 15px;">
             <span class="layui-breadcrumb" lay-separator=">"><a>商品</a><a href="{:url('shop.cate/lst')}">分类管理</a></span>
             <div style="margin-top: 20px">
+                {if condition="$add_code_status eq 1"}
                 <a href="{:url('shop.cate/add')}"><button class="layui-btn">增加</button></a>
+                {/if}
             </div>
         <table class="layui-table">
             <colgroup>
@@ -31,7 +33,13 @@
                        {$cate->getTitle($cate->pid)}
                     </td>
                     <td>{$cate.weight}</td>
-                    <td><a href="{:url('shop.cate/edit', ['id'=>$cate.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$cate.id})" value="删除"></td>
+                    <td>
+                        {if condition="$edit_code_status eq 1"}
+                        <a href="{:url('shop.cate/edit', ['id'=>$cate.id])}"><button class="layui-btn">编辑</button></a>
+                        {/if}
+                        {if condition="$del_code_status eq 1"}
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$cate.id})" value="删除"></td>
+                        {/if}
                 </tr>
                 {/foreach}
             </tbody>

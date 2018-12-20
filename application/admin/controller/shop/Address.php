@@ -11,6 +11,11 @@ class Address extends Base
 	private $lst_code = '2-7-0';
 	public function lst()
 	{
+		$lst_code = $this->lst_code;
+		$lst_code_status = $this->checkCode($lst_code);
+		if ($lst_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$user_name = input('user_name', '');
 		$user_id = '-1';
 		$s_user_id_eq = 'neq';

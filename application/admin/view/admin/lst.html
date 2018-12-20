@@ -5,13 +5,16 @@
         <div style="padding: 15px;">
             <span class="layui-breadcrumb" lay-separator=">"><a>后台用户</a><a href="{:url('admin/lst')}">后台用户管理</a></span>
             <div style="margin-top: 20px">
+            {if condition="$add_code_status eq 1"}
             <a href="{:url('admin/add')}"><button class="layui-btn">增加</button></a>
+            {/if}
             </div>
         <table class="layui-table">
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>昵称</th>
+                    <th>角色</th>
                     <th>操作</th>
                 </tr> 
                 </thead>
@@ -20,14 +23,25 @@
                 <tr>
                     <td>{$admin.id}</td>
                     <td>{$admin.name}</td>
-                    <td><a href="{:url('admin/edit', ['id'=>$admin.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$admin.id})" value="删除"></td>
+                    <td>
+                        {foreach name="admin.role" item="role"}
+                            <button class="layui-btn layui-btn-radius layui-btn-normal">{$role}</button>
+                        {/foreach}
+                    </td>
+                    <td>
+                        {if condition="$edit_code_status eq 1"}
+                        <a href="{:url('admin/edit', ['id'=>$admin.id])}"><button class="layui-btn">编辑</button></a>
+                        {/if}
+                        {if condition="$del_code_status eq 1"}
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$admin.id})" value="删除">
+                        {/if}
+                    </td>
                 </tr>
                 {/foreach}
             </tbody>
         </table>
         </div>
     </div>
-
 {include file="common/footer" /}
  
 <script type="text/javascript">

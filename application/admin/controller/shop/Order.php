@@ -19,6 +19,24 @@ class Order extends Base
 
 	public function lst() 
 	{
+		$lst_code = $this->lst_code;
+		$lst_code_status = $this->checkCode($lst_code);
+		if ($lst_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
+		$edit_code = $this->edit_code;
+		$edit_code_status = $this->checkCode($edit_code);
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		$add_code = $this->add_code;
+		$add_code_status = $this->checkCode($add_code);
+		$fahuo_code = $this->fahuo_code;
+		$fahuo_code_status = $this->checkCode($fahuo_code);
+		$data = [];
+		$data['add_code_status'] = $add_code_status;
+		$data['edit_code_status'] = $edit_code_status;
+		$data['del_code_status'] = $del_code_status;
+		$data['fahuo_code_status'] = $fahuo_code_status;
 		$name = input('name', '');
 		$pay_num = input('pay_num', '');
 		$s_pay_num_eq = $pay_num == '' ? 'neq' : 'eq';
@@ -40,11 +58,16 @@ class Order extends Base
         $this->assign('pay_num', $pay_num);
 		$this->assign('orders', $o_orders);
 
-		return $this->fetch('lst');
+		return $this->fetch('lst', $data);
 	}
 
 	public function add()
 	{
+		$add_code = $this->add_code;
+		$add_code_status = $this->checkCode($add_code);
+		if ($add_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		if (Request::instance()->isGet()) {
 			return $this->fetch('add');
 		}
@@ -88,6 +111,11 @@ class Order extends Base
 
 	public function edit()
 	{
+		$edit_code = $this->edit_code;
+		$edit_code_status = $this->checkCode($edit_code);
+		if ($edit_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		if (Request::instance()->isGet()) {
 			$o_order = shopOrder::where('id', $id)
@@ -140,6 +168,11 @@ class Order extends Base
 
 	public function del()
 	{
+		$del_code = $this->del_code;
+		$del_code_status = $this->checkCode($del_code);
+		if ($del_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		$o_order = shopOrder::where('id', $id)
 			->where('is_del', '1')
@@ -155,6 +188,11 @@ class Order extends Base
 
 	public function fahuo()
 	{
+		$fahuo_code = $this->fahuo_code;
+		$fahuo_code_status = $this->checkCode($fahuo_code);
+		if ($fahuo_code_status == 0) {
+			exception('请不要乱输谢谢！', 100006);
+		}
 		$id = input('id');
 		$information = input('information', '');
 		$o_order = shopOrder::where('id', $id)

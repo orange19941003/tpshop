@@ -36,7 +36,9 @@
                 <button class="layui-btn" lay-submit lay-filter="formDemo">查找</button>
             </form>
             <div style="margin-top: 20px;">
+            {if condition="$add_code_status eq 1"}
             <a href="{:url('shop.product/add')}"><button class="layui-btn">增加</button></a>
+            {/if}
             </div>
         <table class="layui-table">
                 <thead>
@@ -69,7 +71,20 @@
                     <td>{$vo.price}</td>
                     <td>{$vo.cost}</td>
                     <td>{$vo.pv}</td>
-                    <td><a href="{:url('shop.product/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 15px" onclick="del({$vo.id})" value="删除"><a href="{:url('shop.image/add', ['id'=>$vo.id])}" style="margin-left: 15px"><button class="layui-btn">添加图片</button></a><a href="{:url('shop.type/add', ['pro_id'=>$vo.id])}" style="margin-left: 15px"><button class="layui-btn">添加型号</button></a></td>
+                    <td>
+                        {if condition="$edit_code_status eq 1"}
+                        <a href="{:url('shop.product/edit', ['id'=>$vo.id])}"><button class="layui-btn">编辑</button></a>
+                        {/if}
+                        {if condition="$del_code_status eq 1"}
+                        <input type="button" class="layui-btn delete" style="margin-left: 10px" onclick="del({$vo.id})" value="删除">
+                        {/if}
+                        {if condition="$image_code_status eq 1"}
+                        <a href="{:url('shop.image/add', ['id'=>$vo.id])}" style="margin-left: 10px"><button class="layui-btn">添加图片</button></a>
+                        {/if}
+                        {if condition="$type_code_status eq 1"}
+                        <a href="{:url('shop.type/add', ['pro_id'=>$vo.id])}" style="margin-left: 10px"><button class="layui-btn">添加型号</button></a>
+                        {/if}
+                    </td>
                 </tr>
                 {/foreach}
             </tbody>

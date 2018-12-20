@@ -26,7 +26,9 @@
                 <button class="layui-btn" lay-submit lay-filter="formDemo">查找</button>
             </form>
             <div style="margin-top: 20px">
+            {if condition="$add_code_status eq 1"}
             <a href="{:url('user/add')}"><button class="layui-btn">增加</button></a>
+            {/if}
             </div>
         <table class="layui-table">
                 <thead>
@@ -81,8 +83,19 @@
                         {/if}
                     </td>
                     <td>{$user.admin.name}</td>
-                    <td><a href="{:url('user/edit', ['id'=>$user.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$user.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 20px" onclick="chongzhi({$user.id})" value="充值">
+                    <td>
+                        {if condition="$edit_code_status eq 1"}
+                        <a href="{:url('user/edit', ['id'=>$user.id])}"><button class="layui-btn">编辑</button></a>
+                        {/if}
+                        {if condition="$del_code_status eq 1"}
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$user.id})" value="删除">
+                        {/if}
+                        {if condition="$chongzhi_code_status eq 1"}
+                        <input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 20px" onclick="chongzhi({$user.id})" value="充值">
+                        {/if}
+                        {if condition="$vip_code_status eq 1"}
                         <input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 20px" onclick="vip({$user.id})" value="成为vip">
+                        {/if}
                     </td>
                 </tr>
                 {/foreach}

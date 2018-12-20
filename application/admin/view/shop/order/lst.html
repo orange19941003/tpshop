@@ -5,7 +5,9 @@
         <div style="padding: 15px;">
             <span class="layui-breadcrumb" lay-separator=">"><a>商品</a><a href="{:url('shop.order/lst')}">订单管理</a></span>
             <div style="margin-top: 20px">
+                {if condition="$add_code_status eq 1"}
                 <a href="{:url('shop.order/add')}"><button class="layui-btn">增加</button></a>
+                {/if}
             </div>
             <form class="layui-form" method="get" id="form2" style="margin-top: 20px">
                 <div class="layui-inline">
@@ -83,7 +85,16 @@
                         {$order.admin.name}
                         {/if}
                     </td>
-                    <td><a href="{:url('shop.order/edit', ['id'=>$order.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$order.id})" value="删除"><input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 40px;margin-top: 10px" onclick="fahuo({$order.id})" value="{if condition="$order.status eq 0"}发货{else/}修改{/if}"></td>
+                    <td>
+                        {if condition="$edit_code_status eq 1"}
+                        <a href="{:url('shop.order/edit', ['id'=>$order.id])}"><button class="layui-btn">编辑</button></a>
+                        {/if}
+                        {if condition="$del_code_status eq 1"}
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$order.id})" value="删除">
+                        {/if}
+                        {if condition="$fahuo_code_status eq 1"}
+                        <input type="button" class="layui-btn layui-btn-radius layui-btn-warm" style="margin-left: 40px;margin-top: 10px" onclick="fahuo({$order.id})" value="{if condition="$order.status eq 0"}发货{else/}修改{/if}"></td>
+                        {/if}
                 </tr>
                 {/foreach}
             </tbody>

@@ -14,7 +14,9 @@
                 <button class="layui-btn" lay-submit lay-filter="formDemo">查找</button>
             </form>
             <div style="margin-top: 20px">
+            {if condition="$del_code_status eq 1"}
             <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="alldel()" value="批量删除">
+            {/if}
             </div>
         <div class="layui-form">
         <table class="layui-table">
@@ -42,7 +44,13 @@
                     <td>{$type.admin.name}</td>
                     <td>{$type.weight}</td>
                     <td>{$type.add_time}</td>
-                    <td><a href="{:url('shop.type/edit', ['id'=>$type.id])}"><button class="layui-btn">编辑</button></a><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$type.id})" value="删除"></td>
+                    <td>
+                        {if condition="$edit_code_status eq 1"}
+                        <a href="{:url('shop.type/edit', ['id'=>$type.id])}"><button class="layui-btn">编辑</button></a>
+                        {/if}
+                        {if condition="$del_code_status eq 1"}
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$type.id})" value="删除"></td>
+                        {/if}
                 </tr>
                 {/foreach}
             </tbody>

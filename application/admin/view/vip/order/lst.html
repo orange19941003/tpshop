@@ -70,7 +70,11 @@
                     <td>{$vo.pay_num}</td>
                     <td>{$vo.amount}</td>
                     <td>{$vo.add_time}</td>
-                    <td><input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$vo.id})" value="删除"></td>
+                    <td>
+                        {if condition="$del_code_status eq 1"}
+                        <input type="button" class="layui-btn delete" style="margin-left: 20px" onclick="del({$vo.id})" value="删除">
+                        {/if}
+                    </td>
                     </tr>
                     {/foreach}
             </tbody>
